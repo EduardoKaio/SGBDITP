@@ -51,7 +51,7 @@ int main()
         );
 
         scanf("%i", &opcao);
-        char nome_tabela[20];
+        char nome_tabela[50];
 
         switch (opcao)
         {
