@@ -1,12 +1,6 @@
-Cliente
-| id | nome       | idade      | altura     |
---------------------
-pessoa
-| id | nome       | idade      | altura     |
+Tabela:pessoa Colunas:2
+| i id | s nome       |
 ----------------------------------
-Funcionario
-| id | nome       | idade      | altura     |
-----------------------------------
-Cliente
-| id | nome       | idade      | altura     |
+Tabela:medico Colunas:3
+| i id | s nome       | i crm        |
 ----------------------------------

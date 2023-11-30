@@ -21,6 +21,8 @@ typedef struct
 } Tabela;
 
 void criarTabela(Tabela tabela){
+    FILE *tabelas;
+    
     tabelas = fopen("tabelas.txt", "a");
     if(tabelas == NULL){
         printf("Ocorreu um erro ao criar a tabela");
@@ -29,12 +31,12 @@ void criarTabela(Tabela tabela){
         printf("Informe o nome da tabela: ");
         scanf("%s", tabela.nome_tabela);  
 
-        fprintf(tabelas, "%s: ", tabela.nome_tabela);
+        fprintf(tabelas, "Tabela:%s", tabela.nome_tabela);
 
         printf("Informe quantas colunas deseja inserir: ");
         scanf("%i", &tabela.n_colunas);
 
-        fprintf(tabelas, "%i colunas\n", tabela.n_colunas);
+        fprintf(tabelas, " Colunas:%i\n", tabela.n_colunas);
 
         Coluna coluna[tabela.n_colunas];
 
@@ -48,6 +50,7 @@ void criarTabela(Tabela tabela){
                 fprintf(tabelas, " i %s |", coluna[i].nome_coluna);
             } else {
                 
+
                 printf("Informe o tipo da coluna %i:\n"
                     "[i] - Inteiro\n"
                     "[c] - Caractere\n"
@@ -76,13 +79,20 @@ void criarTabela(Tabela tabela){
         printf("Cadastro Concluído\n");
         printf("===================================\n");
         
+        sleep(2);
+
         system("cls");
     }
-} 
+}
 
-void criarNovaLinha(char nome_tabela[50]){
-    int i;
+int procurarTabela(char nome_tabela[50]){
+    FILE *tabelas;
+    
+    Tabela tabela;
+    int achou_tabela=0;
     char search[100];
+    sprintf(search, "Tabela:%s", nome_tabela);
+    
     tabelas = fopen("tabelas.txt", "r");
 
     if (tabelas == NULL) {
@@ -90,15 +100,64 @@ void criarNovaLinha(char nome_tabela[50]){
         printf("O erro foi: %s\n", strerror(errno));
     } else {
 
-        while (fgets(search, 100, tabelas) != NULL) {
-            if (strstr(search, nome_tabela)) {
-                printf("Achou");
+        while (fscanf(tabelas, "%99s", tabela.nome_tabela) != EOF) {
+
+
+            if (strcmp(tabela.nome_tabela, search) == 0) {
+                printf("Achou a tabela: %s\n", nome_tabela);
+                achou_tabela = 1;
+                break;  
             }
-            
         }
-        
+
+        if (achou_tabela==0) {
+            printf("Tabela nao encontrada.\n");
+        }
         fclose(tabelas);
     }
+
+    return achou_tabela;
+}
+
+void criarNovaLinha(char nome_tabela[50]){
+    int achou_tabela = procurarTabela(nome_tabela);
+
+    if (achou_tabela == 0) {
+
+        printf("f\n");
+        return;
+    }
+
+    // FILE *tabelas = fopen("tabelas.txt", "a");
+
+    // if (tabelas == NULL) {
+    //     printf("Erro na abertura do arquivo para adicao: %s\n", strerror(errno));
+    //     return;
+    // }
+
+    // printf("Informe os valores para as colunas:\n");
+
+    // char valores_colunas[tabela.n_colunas][50];
+
+    // for (int i = 0; i < tabela.n_colunas; i++) {
+    //     printf("%s: ", tabela.nome_tabela);
+    //     scanf("%s", valores_colunas[i]);
+    // }
+
+    // // Escreve a nova linha no arquivo
+    // fprintf(tabelas, "%s", tabela.nome_tabela);
+
+    // for (int i = 0; i < tabela.n_colunas; i++) {
+    //     fprintf(tabelas, " %s", valores_colunas[i]);
+    // }
+
+    // fprintf(tabelas, "\n");
+
+    // printf("Nova linha adicionada na tabela: %s\n", nome_tabela);
+
+    // fclose(tabelas);
+
+    
 }
 
 void pesquisarDado(){
