@@ -1,0 +1,12 @@
+Cliente
+| id | nome       | idade      | altura     |
+--------------------
+pessoa
+| id | nome       | idade      | altura     |
+----------------------------------
+Funcionario
+| id | nome       | idade      | altura     |
+----------------------------------
+Cliente
+| id | nome       | idade      | altura     |
+----------------------------------

@@ -3,6 +3,7 @@
 #include <math.h>
 #include <string.h>
 #include <errno.h>
+#include <locale.h>
 
 FILE *tabelas;
 
@@ -23,6 +24,8 @@ int cont = 0;
 
 void criarTabela(Tabela tabela[cont]){
     cont++;
+
+    tabela = malloc(cont * sizeof(int));
     
     if (cont > 1){
         tabela = realloc(tabela, cont * sizeof(int));
@@ -33,35 +36,57 @@ void criarTabela(Tabela tabela[cont]){
         printf("Ocorreu um erro ao criar a tabela");
         printf("O erro foi: %s\n", strerror(errno));
     } else {
-        printf("Informe o nome da tabela:");
-        scanf("%s", tabela[cont].nome_tabela);
+        printf("Informe o nome da tabela: ");
+        scanf("%s", tabela[cont].nome_tabela);  
+
         fprintf(tabelas, "%s\n", tabela[cont].nome_tabela);
-        printf("Informe quantas colunas deseja inserir:");
-        scanf("%i", tabela[cont].n_colunas);
+
+        printf("Informe quantas colunas deseja inserir: ");
+        scanf("%i", &tabela[cont].n_colunas);
 
         Coluna coluna[tabela[cont].n_colunas];
+
+        fprintf(tabelas, "|");
 
         for(int i=0; i<tabela[cont].n_colunas; i++){
             if (i == 0)
             {
-                printf("informe o nome da coluna com a chave primária");
+                printf("informe o nome da coluna com a chave primária: ");
                 scanf("%s", coluna[i].nome_coluna);
-                fprintf(tabelas, "%s | ", coluna[i].nome_coluna);
+                fprintf(tabelas, " %s |", coluna[i].nome_coluna);
             } else {
                 
-                printf("Informe o tipo e o nome da %iº coluna que deseja criar:\n"
-                    "i para inteiro\n"
-                    "c para caractere\n"
-                    "f para float\n"
-                    "d para double\n"
-                    "s para string\n", i+1
+                printf("Informe o tipo da coluna %i:\n"
+                    "[i] - Inteiro\n"
+                    "[c] - Caractere\n"
+                    "[d] - Decimal\n"
+                    "[s] - Texto\n", i+1
                 );
                 
-                scanf("%c %s", &coluna[i].tipo_coluna, coluna[i].nome_coluna);
-                fprintf(tabelas, "%s | ", coluna[i].nome_coluna);
+                scanf(" %c", &coluna[i].tipo_coluna);
+                
+                while (getchar() != '\n'); // limpar buffer para ler dnv
+
+                printf("Informe o nome da coluna %i: ", i+1);
+                fgets(coluna[i].nome_coluna, sizeof(coluna[i].nome_coluna), stdin);
+
+                coluna[i].nome_coluna[strcspn(coluna[i].nome_coluna, "\n")] = 0; // tirar o \n do fgets
+
+                fprintf(tabelas, " %-10s |", coluna[i].nome_coluna);
             }
         }
+        fprintf(tabelas, "\n----------------------------------\n");
         fclose(tabelas);
+        
+        system("cls");//limpar tela
+        
+        printf("===================================\n");
+        printf("Cadastro Concluído\n");
+        printf("===================================\n");
+
+        sleep(2);
+        
+        system("cls");
     }
 } 
 
@@ -92,21 +117,22 @@ void apagarLinha()  {
 
 int main()
 {
-
+    
+    setlocale(LC_ALL, "pt_BR.utf8");
     int opcao;
     Tabela tabela[cont];
 
     do
     {
         printf("Escolha uma opção:\n"
-               "1 - Criar uma nova tabela\n"
-               "2 - Criar uma nova linha na tabela\n"
-               "3 - Pesquisar valor em uma tabela\n"
-               "4 - Listar todas as tabelas\n"
-               "5 - Listar todos os dados de uma tabela\n"
-               "6 - Apagar uma tabela\n"
-               "7 - Apagar uma linha de uma tabela\n"
-               "0 - Sair \n"
+               "[1] - Criar uma nova tabela\n"
+               "[2] - Criar uma nova linha na tabela\n"
+               "[3] - Pesquisar valor em uma tabela\n"
+               "[4] - Listar todas as tabelas\n"
+               "[5] - Listar todos os dados de uma tabela\n"
+               "[6] - Apagar uma tabela\n"
+               "[7] - Apagar uma linha de uma tabela\n"
+               "[0] - Sair \n"
         );
 
         scanf("%i", &opcao);
@@ -119,11 +145,7 @@ int main()
             break;
         
         case 2:
-            // char nome_tabela[20]; //exemplo
-            printf("Digite o nome da tabela: ");
-            scanf("\n");
-            fgets(nome_tabela, 51, stdin);
-            criarNovaLinha();
+            criarNovaLinha(tabela);
             break;
         
         case 3:
