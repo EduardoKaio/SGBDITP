@@ -20,40 +20,32 @@ typedef struct
     int n_colunas;
 } Tabela;
 
-int cont = 0;
-
-void criarTabela(Tabela tabela[cont]){
-    cont++;
-
-    tabela = malloc(cont * sizeof(int));
-    
-    if (cont > 1){
-        tabela = realloc(tabela, cont * sizeof(int));
-    }
-
+void criarTabela(Tabela tabela){
     tabelas = fopen("tabelas.txt", "a");
     if(tabelas == NULL){
         printf("Ocorreu um erro ao criar a tabela");
         printf("O erro foi: %s\n", strerror(errno));
     } else {
         printf("Informe o nome da tabela: ");
-        scanf("%s", tabela[cont].nome_tabela);  
+        scanf("%s", tabela.nome_tabela);  
 
-        fprintf(tabelas, "%s\n", tabela[cont].nome_tabela);
+        fprintf(tabelas, "%s: ", tabela.nome_tabela);
 
         printf("Informe quantas colunas deseja inserir: ");
-        scanf("%i", &tabela[cont].n_colunas);
+        scanf("%i", &tabela.n_colunas);
 
-        Coluna coluna[tabela[cont].n_colunas];
+        fprintf(tabelas, "%i colunas\n", tabela.n_colunas);
+
+        Coluna coluna[tabela.n_colunas];
 
         fprintf(tabelas, "|");
 
-        for(int i=0; i<tabela[cont].n_colunas; i++){
+        for(int i=0; i<tabela.n_colunas; i++){
             if (i == 0)
             {
                 printf("informe o nome da coluna com a chave primária: ");
                 scanf("%s", coluna[i].nome_coluna);
-                fprintf(tabelas, " %s |", coluna[i].nome_coluna);
+                fprintf(tabelas, " i %s |", coluna[i].nome_coluna);
             } else {
                 
                 printf("Informe o tipo da coluna %i:\n"
@@ -72,7 +64,7 @@ void criarTabela(Tabela tabela[cont]){
 
                 coluna[i].nome_coluna[strcspn(coluna[i].nome_coluna, "\n")] = 0; // tirar o \n do fgets
 
-                fprintf(tabelas, " %-10s |", coluna[i].nome_coluna);
+                fprintf(tabelas, " %c %-10s |", coluna[i].tipo_coluna, coluna[i].nome_coluna);
             }
         }
         fprintf(tabelas, "\n----------------------------------\n");
@@ -83,15 +75,30 @@ void criarTabela(Tabela tabela[cont]){
         printf("===================================\n");
         printf("Cadastro Concluído\n");
         printf("===================================\n");
-
-        sleep(2);
         
         system("cls");
     }
 } 
 
-void criarNovaLinha(){
+void criarNovaLinha(char nome_tabela[50]){
+    int i;
+    char search[100];
+    tabelas = fopen("tabelas.txt", "r");
 
+    if (tabelas == NULL) {
+        printf("Erro na leitura do arquivo");
+        printf("O erro foi: %s\n", strerror(errno));
+    } else {
+
+        while (fgets(search, 100, tabelas) != NULL) {
+            if (strstr(search, nome_tabela)) {
+                printf("Achou");
+            }
+            
+        }
+        
+        fclose(tabelas);
+    }
 }
 
 void pesquisarDado(){
@@ -120,7 +127,7 @@ int main()
     
     setlocale(LC_ALL, "pt_BR.utf8");
     int opcao;
-    Tabela tabela[cont];
+    Tabela tabela;
 
     do
     {
@@ -145,7 +152,9 @@ int main()
             break;
         
         case 2:
-            criarNovaLinha(tabela);
+            printf("Informe a tabela que deseja adicionar uma linha: ");
+            scanf("%s", nome_tabela);
+            criarNovaLinha(nome_tabela);
             break;
         
         case 3:

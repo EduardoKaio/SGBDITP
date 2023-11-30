@@ -1,0 +1,9 @@
+funcionario: 2 colunas
+| i id | s nome       |
+----------------------------------
+carro: 2 colunas
+| i id | s marca      |
+----------------------------------
+pessoa: 3 colunas
+| i id | s nome       | i idade      |
+----------------------------------
