@@ -21,7 +21,6 @@ typedef struct
 } Tabela;
 
 void criarTabela(Tabela tabela){
-    FILE *tabelas;
     
     tabelas = fopen("tabelas.txt", "a");
     if(tabelas == NULL){
@@ -86,7 +85,6 @@ void criarTabela(Tabela tabela){
 }
 
 int procurarTabela(char nome_tabela[50]){
-    FILE *tabelas;
     
     Tabela tabela;
     int achou_tabela=0;
@@ -123,8 +121,6 @@ void criarNovaLinha(char nome_tabela[50]){
     int achou_tabela = procurarTabela(nome_tabela);
 
     if (achou_tabela == 0) {
-
-        printf("f\n");
         return;
     }
 

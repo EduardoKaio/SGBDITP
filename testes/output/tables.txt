@@ -1,0 +1,11 @@
+Pessoa 3 1
+Nome string
+idade int
+peso float
+Kaio 19 80.500000 
+Felipe 10 12.500000 
+Cliente 2 2
+numero int
+endereco string
+21313221 natal 
+7979897 pdf 

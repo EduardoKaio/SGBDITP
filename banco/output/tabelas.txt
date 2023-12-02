@@ -1,6 +1,0 @@
-Tabela:pessoa Colunas:2
-| i id | s nome       |
-----------------------------------
-Tabela:medico Colunas:3
-| i id | s nome       | i crm        |
-----------------------------------
