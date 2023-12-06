@@ -83,24 +83,25 @@ void loadTablesFromFile() {
         // Carregar registros da tabela
         tables[numTables].numRecords = 0; // Resetar o número de registros
 
-        while (fscanf(file, "%s", tables[numTables].records[tables[numTables].numRecords][0].stringValue) == 1) {
+        while (fscanf(file, "%d ", &tables[numTables].records[tables[numTables].numRecords][0].intValue) == 1) {
             for (int i = 1; i < tables[numTables].numColumns; i++) {
                 if (strcmp(tables[numTables].columns[i].type, "int") == 0) {
-                    fscanf(file, "%d", &tables[numTables].records[tables[numTables].numRecords][i].intValue);
+                    fscanf(file, "%d ", &tables[numTables].records[tables[numTables].numRecords][i].intValue);
                 } else if (strcmp(tables[numTables].columns[i].type, "char") == 0) {
-                    fscanf(file, "%s", tables[numTables].records[tables[numTables].numRecords][i].stringValue);
+                    fscanf(file, "%s ", tables[numTables].records[tables[numTables].numRecords][i].stringValue);
                 } else if (strcmp(tables[numTables].columns[i].type, "float") == 0) {
-                    fscanf(file, "%f", &tables[numTables].records[tables[numTables].numRecords][i].floatValue);
+                    fscanf(file, "%f ", &tables[numTables].records[tables[numTables].numRecords][i].floatValue);
                 } else if (strcmp(tables[numTables].columns[i].type, "double") == 0) {
-                    fscanf(file, "%lf", &tables[numTables].records[tables[numTables].numRecords][i].doubleValue);
+                    fscanf(file, "%lf ", &tables[numTables].records[tables[numTables].numRecords][i].doubleValue);
                 } else if (strcmp(tables[numTables].columns[i].type, "string") == 0) {
-                    fscanf(file, "%s", tables[numTables].records[tables[numTables].numRecords][i].stringValue);
+                    fscanf(file, "%s ", tables[numTables].records[tables[numTables].numRecords][i].stringValue);
                 }
             }
 
             tables[numTables].numRecords++;
         }
 
+        printf("%d\n", numTables);
         numTables++;
     }
 
