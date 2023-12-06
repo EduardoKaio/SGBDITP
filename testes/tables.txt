@@ -1,0 +1,9 @@
+Pessoa 3
+id int
+nome string
+idade int
+1 Kaio 20 
+2 Felipe 19 
+Carro 2
+id int
+marca string

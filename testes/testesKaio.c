@@ -10,13 +10,13 @@
 typedef struct {
     char name[MAX_STRING_LENGTH];
     char type[MAX_STRING_LENGTH];
+    int primaryKey[MAX_STRING_LENGTH];
 } Column;
 
 typedef struct {
     char name[MAX_STRING_LENGTH];
     Column columns[MAX_COLUMNS];
     int numColumns;
-    char primaryKey[MAX_STRING_LENGTH];
     union {
         int intValue;
         char stringValue[MAX_STRING_LENGTH];
@@ -38,7 +38,7 @@ void saveTablesToFile() {
     }
 
     for (int i = 0; i < numTables; i++) {
-        fprintf(file, "%s %d %s\n", tables[i].name, tables[i].numColumns, tables[i].primaryKey);
+        fprintf(file, "%s %d\n", tables[i].name, tables[i].numColumns);
 
         for (int j = 0; j < tables[i].numColumns; j++) {
             fprintf(file, "%s %s\n", tables[i].columns[j].name, tables[i].columns[j].type);
@@ -75,7 +75,7 @@ void loadTablesFromFile() {
         exit(EXIT_FAILURE);
     }
 
-    while (fscanf(file, "%s %d %s", tables[numTables].name, &tables[numTables].numColumns, tables[numTables].primaryKey) == 3) {
+    while (fscanf(file, "%s %d", tables[numTables].name, &tables[numTables].numColumns) == 2) {
         for (int i = 0; i < tables[numTables].numColumns; i++) {
             fscanf(file, "%s %s", tables[numTables].columns[i].name, tables[numTables].columns[i].type);
         }
@@ -108,6 +108,7 @@ void loadTablesFromFile() {
 }
 
 void listTableData() {
+    //loadTablesFromFile();
     char tableName[MAX_STRING_LENGTH];
     int tableIndex = -1;
 
@@ -153,6 +154,7 @@ void listTableData() {
     }
 }
 void listTables() {
+    //loadTablesFromFile();
     printf("\n=== Lista de Tabelas ===\n");
 
     for (int i = 0; i < numTables; i++) {
@@ -192,18 +194,22 @@ void createTable() {
     printf("Digite o nome da tabela: ");
     scanf("%s", tables[numTables].name);
 
-    printf("Digite o nome da coluna chave primária (inteiro sem sinal): ");
-    scanf("%s", tables[numTables].primaryKey);
-
     printf("Quantas colunas a tabela terá? ");
     scanf("%d", &tables[numTables].numColumns);
 
     for (int i = 0; i < tables[numTables].numColumns; i++) {
-        printf("Nome da coluna %d: ", i + 1);
-        scanf("%s", tables[numTables].columns[i].name);
+        if (i == 0) {
+            char tipo[MAX_STRING_LENGTH] = "int";
+            printf("Digite o nome da coluna chave primária (inteiro sem sinal): ");
+            scanf("%s", tables[numTables].columns[i].name);
+            strcpy(tables[numTables].columns[i].type, tipo);
+        } else {
+            printf("Nome da coluna %d: ", i + 1);
+            scanf("%s", tables[numTables].columns[i].name);
 
-        printf("Tipo de dado da coluna %d (char, int, float, double, string): ", i + 1);
-        scanf("%s", tables[numTables].columns[i].type);
+            printf("Tipo de dado da coluna %d (char, int, float, double, string): ", i + 1);
+            scanf("%s", tables[numTables].columns[i].type);
+        }
     }
 
     numTables++;
@@ -212,7 +218,7 @@ void createTable() {
 }
 
 void insertRecord() {
-   char tableName[MAX_STRING_LENGTH];
+    char tableName[MAX_STRING_LENGTH];
     int tableIndex = -1;
 
     printf("Digite o nome da tabela para inserir o registro: ");
@@ -239,6 +245,8 @@ void insertRecord() {
 
     // Pede ao usuário para fornecer valores para cada coluna
     for (int i = 0; i < tables[tableIndex].numColumns; i++) {
+        
+
         printf("Digite o valor para a coluna %s (%s): ", tables[tableIndex].columns[i].name, tables[tableIndex].columns[i].type);
 
         if (strcmp(tables[tableIndex].columns[i].type, "int") == 0) {
