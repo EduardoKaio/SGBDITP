@@ -4,6 +4,7 @@ nome string
 idade int
 1 Kaio 20 
 2 Felipe 19 
+3 Marcos 20 
 Carro 2
 id int
 marca string

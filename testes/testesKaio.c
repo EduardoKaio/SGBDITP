@@ -10,19 +10,25 @@
 typedef struct {
     char name[MAX_STRING_LENGTH];
     char type[MAX_STRING_LENGTH];
-    int primaryKey[MAX_STRING_LENGTH];
 } Column;
 
-typedef struct {
-    char name[MAX_STRING_LENGTH];
-    Column columns[MAX_COLUMNS];
-    int numColumns;
+typedef struct
+{
+    int primaryKey;
     union {
         int intValue;
         char stringValue[MAX_STRING_LENGTH];
         float floatValue;
         double doubleValue;
-    } records[MAX_RECORDS][MAX_COLUMNS];
+    } o_records[MAX_RECORDS][MAX_COLUMNS];
+} Records;
+
+
+typedef struct {
+    char name[MAX_STRING_LENGTH];
+    Column columns[MAX_COLUMNS];
+    int numColumns;
+    Records records[MAX_RECORDS];
     int numRecords;
 } Table;
 
@@ -46,18 +52,23 @@ void saveTablesToFile() {
 
         for (int j = 0; j < tables[i].numRecords; j++) {
             for (int k = 0; k < tables[i].numColumns; k++) {
-                if (strcmp(tables[i].columns[k].type, "int") == 0) {
-                    fprintf(file, "%d ", tables[i].records[j][k].intValue);
-                } else if (strcmp(tables[i].columns[k].type, "char") == 0) {
-                    fprintf(file, "%s ", tables[i].records[j][k].stringValue);
-                } else if (strcmp(tables[i].columns[k].type, "float") == 0) {
-                    fprintf(file, "%f ", tables[i].records[j][k].floatValue);
-                } else if (strcmp(tables[i].columns[k].type, "double") == 0) {
-                    fprintf(file, "%lf ", tables[i].records[j][k].doubleValue);
-                }   else if (strcmp(tables[i].columns[k].type, "string") == 0) {
-                    fprintf(file, "%s ", tables[i].records[j][k].stringValue);
+
+                if (k == 0) {
+                    fprintf(file, "%d ", tables[i].records[j].primaryKey);
                 } else {
-                    fprintf(file, "Tipo não suportado ");
+                    if (strcmp(tables[i].columns[k].type, "int") == 0) {
+                        fprintf(file, "%d ", tables[i].records[j].o_records[j][k].intValue);
+                    } else if (strcmp(tables[i].columns[k].type, "char") == 0) {
+                        fprintf(file, "%s ", tables[i].records[j].o_records[j][k].stringValue);
+                    } else if (strcmp(tables[i].columns[k].type, "float") == 0) {
+                        fprintf(file, "%f ", tables[i].records[j].o_records[j][k].floatValue);
+                    } else if (strcmp(tables[i].columns[k].type, "double") == 0) {
+                        fprintf(file, "%lf ", tables[i].records[j].o_records[j][k].doubleValue);
+                    }   else if (strcmp(tables[i].columns[k].type, "string") == 0) {
+                        fprintf(file, "%s ", tables[i].records[j].o_records[j][k].stringValue);
+                    } else {
+                        fprintf(file, "Tipo não suportado ");
+                    }
                 }
             }
             fprintf(file, "\n");
@@ -83,18 +94,18 @@ void loadTablesFromFile() {
         // Carregar registros da tabela
         tables[numTables].numRecords = 0; // Resetar o número de registros
 
-        while (fscanf(file, "%d ", &tables[numTables].records[tables[numTables].numRecords][0].intValue) == 1) {
+        while (fscanf(file, "%d ", &tables[numTables].records[tables[numTables].numRecords].primaryKey) == 1) {
             for (int i = 1; i < tables[numTables].numColumns; i++) {
                 if (strcmp(tables[numTables].columns[i].type, "int") == 0) {
-                    fscanf(file, "%d ", &tables[numTables].records[tables[numTables].numRecords][i].intValue);
+                    fscanf(file, "%d ", &tables[numTables].records[tables[numTables].numRecords].o_records[tables[numTables].numRecords][i].intValue);
                 } else if (strcmp(tables[numTables].columns[i].type, "char") == 0) {
-                    fscanf(file, "%s ", tables[numTables].records[tables[numTables].numRecords][i].stringValue);
+                    fscanf(file, "%s ", tables[numTables].records[tables[numTables].numRecords].o_records[tables[numTables].numRecords][i].stringValue);
                 } else if (strcmp(tables[numTables].columns[i].type, "float") == 0) {
-                    fscanf(file, "%f ", &tables[numTables].records[tables[numTables].numRecords][i].floatValue);
+                    fscanf(file, "%f ", &tables[numTables].records[tables[numTables].numRecords].o_records[tables[numTables].numRecords][i].floatValue);
                 } else if (strcmp(tables[numTables].columns[i].type, "double") == 0) {
-                    fscanf(file, "%lf ", &tables[numTables].records[tables[numTables].numRecords][i].doubleValue);
+                    fscanf(file, "%lf ", &tables[numTables].records[tables[numTables].numRecords].o_records[tables[numTables].numRecords][i].doubleValue);
                 } else if (strcmp(tables[numTables].columns[i].type, "string") == 0) {
-                    fscanf(file, "%s ", tables[numTables].records[tables[numTables].numRecords][i].stringValue);
+                    fscanf(file, "%s ", tables[numTables].records[tables[numTables].numRecords].o_records[tables[numTables].numRecords][i].stringValue);
                 }
             }
 
@@ -139,16 +150,20 @@ void listTableData() {
     // Exibir registros da tabela
     for (int i = 0; i < tables[tableIndex].numRecords; i++) {
         for (int j = 0; j < tables[tableIndex].numColumns; j++) {
-            if (strcmp(tables[tableIndex].columns[j].type, "int") == 0) {
-                printf("%d\t", tables[tableIndex].records[i][j].intValue);
-            } else if (strcmp(tables[tableIndex].columns[j].type, "char") == 0) {
-                printf("%s\t", tables[tableIndex].records[i][j].stringValue);
-            } else if (strcmp(tables[tableIndex].columns[j].type, "float") == 0) {
-                printf("%0.2f\t", tables[tableIndex].records[i][j].floatValue);
-            } else if (strcmp(tables[tableIndex].columns[j].type, "double") == 0) {
-                printf("%0.2lf\t", tables[tableIndex].records[i][j].doubleValue);
-            }  else if (strcmp(tables[tableIndex].columns[j].type, "string") == 0) {
-                printf("%s\t", tables[tableIndex].records[i][j].stringValue);
+            if (j == 0) {
+                printf("%d\t", tables[tableIndex].records[i].primaryKey);
+            } else {
+                if (strcmp(tables[tableIndex].columns[j].type, "int") == 0) {
+                    printf("%d\t", tables[tableIndex].records[i].o_records[i][j].intValue);
+                } else if (strcmp(tables[tableIndex].columns[j].type, "char") == 0) {
+                    printf("%s\t", tables[tableIndex].records[i].o_records[i][j].stringValue);
+                } else if (strcmp(tables[tableIndex].columns[j].type, "float") == 0) {
+                    printf("%0.2f\t", tables[tableIndex].records[i].o_records[i][j].floatValue);
+                } else if (strcmp(tables[tableIndex].columns[j].type, "double") == 0) {
+                    printf("%0.2lf\t", tables[tableIndex].records[i].o_records[i][j].doubleValue);
+                }  else if (strcmp(tables[tableIndex].columns[j].type, "string") == 0) {
+                    printf("%s\t", tables[tableIndex].records[i].o_records[i][j].stringValue);
+                }
             }
         }
         printf("\n");
@@ -169,16 +184,20 @@ void listTables() {
         // Exibir registros da tabela
         for (int j = 0; j < tables[i].numRecords; j++) {
             for (int k = 0; k < tables[i].numColumns; k++) {
-                if (strcmp(tables[i].columns[k].type, "int") == 0) {
-                    printf("%d\t",tables[i].records[j][k].intValue);
-                } else if (strcmp(tables[i].columns[k].type, "char") == 0) {
-                    printf("%s\t",tables[i].records[j][k].stringValue);
-                } else if (strcmp(tables[i].columns[k].type, "float") == 0) {
-                    printf("%0.2f\t",tables[i].records[j][k].floatValue);
-                } else if (strcmp(tables[i].columns[k].type, "double") == 0) {
-                    printf("%0.2lf\t",tables[i].records[j][k].doubleValue);
-                } else if (strcmp(tables[i].columns[k].type, "string") == 0) {
-                    printf("%s\t",tables[i].records[j][k].stringValue);
+                if (k == 0) {
+                    printf("%d\t", tables[i].records[j].primaryKey);
+                } else {
+                    if (strcmp(tables[i].columns[k].type, "int") == 0) {
+                        printf("%d\t",tables[i].records[j].o_records[j][k].intValue);
+                    } else if (strcmp(tables[i].columns[k].type, "char") == 0) {
+                        printf("%s\t",tables[i].records[j].o_records[j][k].stringValue);
+                    } else if (strcmp(tables[i].columns[k].type, "float") == 0) {
+                        printf("%0.2f\t",tables[i].records[j].o_records[j][k].floatValue);
+                    } else if (strcmp(tables[i].columns[k].type, "double") == 0) {
+                        printf("%0.2lf\t",tables[i].records[j].o_records[j][k].doubleValue);
+                    } else if (strcmp(tables[i].columns[k].type, "string") == 0) {
+                        printf("%s\t",tables[i].records[j].o_records[j][k].stringValue);
+                    }
                 }
             }
             printf("\n");
@@ -244,26 +263,37 @@ void insertRecord() {
 
     printf("Inserindo registro na tabela %s:\n", tableName);
 
+    int aux = tables[tableIndex].numRecords;
+
     // Pede ao usuário para fornecer valores para cada coluna
     for (int i = 0; i < tables[tableIndex].numColumns; i++) {
-        
 
         printf("Digite o valor para a coluna %s (%s): ", tables[tableIndex].columns[i].name, tables[tableIndex].columns[i].type);
 
-        if (strcmp(tables[tableIndex].columns[i].type, "int") == 0) {
-            scanf("%d", (int*)&tables[tableIndex].records[tables[tableIndex].numRecords][i]);
-        } else if (strcmp(tables[tableIndex].columns[i].type, "char") == 0) {
-            scanf(" %c", (char*)&tables[tableIndex].records[tables[tableIndex].numRecords][i]);
-        } else if (strcmp(tables[tableIndex].columns[i].type, "float") == 0) {
-            scanf("%f", (float*)&tables[tableIndex].records[tables[tableIndex].numRecords][i]);
-        } else if (strcmp(tables[tableIndex].columns[i].type, "double") == 0) {
-            scanf("%lf", (double*)&tables[tableIndex].records[tables[tableIndex].numRecords][i]);
-        } else if (strcmp(tables[tableIndex].columns[i].type, "string") == 0) {
-            scanf(" %s", (char*)&tables[tableIndex].records[tables[tableIndex].numRecords][i]);
+        if (i == 0) {
+            scanf("%d", &tables[tableIndex].records[tables[tableIndex].numRecords].primaryKey);
+            for (int j = (tables[tableIndex].numRecords)-1; j >= 0; j--) {
+                if (tables[tableIndex].records[tables[tableIndex].numRecords].primaryKey == tables[tableIndex].records[j].primaryKey) {
+                    printf("Chave primária já existe");
+                    return;
+                }
+            }
         } else {
-            printf("Tipo de dado não suportado.\n");
-            return;
-        }
+            if (strcmp(tables[tableIndex].columns[i].type, "int") == 0) {
+                scanf("%d", (int*)&tables[tableIndex].records[aux].o_records[aux][i]);
+            } else if (strcmp(tables[tableIndex].columns[i].type, "char") == 0) {
+                scanf(" %c", (char*)&tables[tableIndex].records[aux].o_records[aux][i]);
+            } else if (strcmp(tables[tableIndex].columns[i].type, "float") == 0) {
+                scanf("%f", (float*)&tables[tableIndex].records[aux].o_records[aux][i]);
+            } else if (strcmp(tables[tableIndex].columns[i].type, "double") == 0) {
+                scanf("%lf", (double*)&tables[tableIndex].records[aux].o_records[i]);
+            } else if (strcmp(tables[tableIndex].columns[i].type, "string") == 0) {
+                scanf(" %s", (char*)&tables[tableIndex].records[aux].o_records[aux][i]);
+            } else {
+                printf("Tipo de dado não suportado.\n");
+                return;
+            }
+        }        
     }
 
     tables[tableIndex].numRecords++;
