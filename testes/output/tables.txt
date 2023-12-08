@@ -1,0 +1,8 @@
+Pessoa 2
+id int
+nome string
+1 kaio 
+Cliente 2
+id int
+pedido int
+1 12334 
