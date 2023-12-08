@@ -1,4 +1,0 @@
-- Ajeitar layout e botar sleep e clear quando necessário;
-- Falta ajeitar os espaçamentos entre as colunas pra ficar certinho no print das listas;
-- Ajeitar as variaveis e funções porque não estão no padrao;
-- Tratar os erros; 
