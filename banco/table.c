@@ -126,6 +126,27 @@ void createTable() {
     numTables++;
     saveTablesToFile();
     printf("Tabela criada com sucesso.\n");
+    
+    printf("\nVoltar ao Menu Principal?\n1. Sim\n2. Não\n");
+    int choice_inicio;
+    printf("Escolha uma opção: ");
+    scanf("%d", &choice_inicio);
+    if(choice_inicio == 1){
+        system("cls");
+        printf("Voltando ao Menu Principal...\n");
+        sleep(2);
+        system("cls");
+        return;
+    } else if (choice_inicio == 2){
+        system("cls");
+        createTable();
+    } else {
+        printf("Valor inválido.\nVoltando ao Menu Principal...\n");
+        sleep(2);
+        system("cls");
+        return;
+    }
+
 }
 
 void insertRecord() {
@@ -190,6 +211,26 @@ void insertRecord() {
     tables[tableIndex].numRecords++;
     saveTablesToFile();
     printf("Registro inserido com sucesso.\n");
+    
+    printf("\nVoltar ao Menu Principal?\n1. Sim\n2. Não\n");
+    int choice_inicio;
+    printf("Escolha uma opção: ");
+    scanf("%d", &choice_inicio);
+    if(choice_inicio == 1){
+        system("cls");
+        printf("Voltando ao Menu Principal...\n");
+        sleep(2);
+        system("cls");
+        return;
+    } else if (choice_inicio == 2){
+        system("cls");
+        insertRecord();
+    } else {
+        printf("Valor inválido.\nVoltando ao Menu Principal...\n");
+        sleep(2);
+        system("cls");
+        return;
+    }
 }
 
 void deleteTable() {
@@ -223,6 +264,26 @@ void deleteTable() {
 
     saveTablesToFile();
     printf("Tabela apagada com sucesso.\n");
+    
+    printf("\nVoltar ao Menu Principal?\n1. Sim\n2. Não\n");
+    int choice_inicio;
+    printf("Escolha uma opção: ");
+    scanf("%d", &choice_inicio);
+    if(choice_inicio == 1){
+        system("cls");
+        printf("Voltando ao Menu Principal...\n");
+        sleep(2);
+        system("cls");
+        return;
+    } else if (choice_inicio == 2){
+        system("cls");
+        deleteTable();
+    } else {
+        printf("Valor inválido.\nVoltando ao Menu Principal...\n");
+        sleep(2);
+        system("cls");
+        return;
+    }
 }
 
 void deleteRecord() {
@@ -291,5 +352,25 @@ void deleteRecord() {
 
     saveTablesToFile();
     printf("Registro apagado com sucesso.\n");
+    
+    printf("\nVoltar ao Menu Principal?\n1. Sim\n2. Não\n");
+    printf("Escolha uma opção: ");
+    int choice_inicio;
+    scanf("%d", &choice_inicio);
+    if(choice_inicio == 1){
+        system("cls");
+        printf("Voltando ao Menu Principal...\n");
+        sleep(2);
+        system("cls");
+        return;
+    } else if (choice_inicio == 2){
+        system("cls");
+        deleteRecord();
+    } else {
+        printf("Valor inválido.\nVoltando ao Menu Principal...\n");
+        sleep(2);
+        system("cls");
+        return;
+    }
 }
 

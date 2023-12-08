@@ -44,6 +44,10 @@ void searchValue() {
         for (int i = 0; i < tables[tableIndex].numRecords; i++) {
             if (tables[tableIndex].records[i].primaryKey == searchValue) {
                 // Exibir a linha que corresponde ao valor pesquisado
+                for (int n = 0; n < tables[tableIndex].numColumns; n++) {
+                    printf("%s\t", tables[tableIndex].columns[n].name);
+                }
+                printf("\n");
                 for (int j = 0; j < tables[tableIndex].numColumns; j++) {
                     if (j==0) {
                         printf("%d\t", tables[tableIndex].records[i].primaryKey);
@@ -88,6 +92,9 @@ void searchValue() {
             for (int i = 0; i < tables[tableIndex].numRecords; i++) {
                 if (tables[tableIndex].records[i].o_records[i][columnChoice - 1].intValue == searchValue) {
                     // Exibir a linha que corresponde ao valor pesquisado
+                    for (int n = 0; n < tables[tableIndex].numColumns; n++) {
+                        printf("%s\t", tables[tableIndex].columns[n].name);
+                    }
                     for (int j = 0; j < tables[tableIndex].numColumns; j++) {
                         if (j==0)
                         {
@@ -119,6 +126,9 @@ void searchValue() {
             for (int i = 0; i < tables[tableIndex].numRecords; i++) {
                 if (strcmp(tables[tableIndex].records[i].o_records[i][columnChoice - 1].stringValue, searchValue) == 0) {
                     // Exibir a linha que corresponde ao valor pesquisado
+                    for (int n = 0; n < tables[tableIndex].numColumns; n++) {
+                        printf("%s\t", tables[tableIndex].columns[n].name);
+                    }
                     for (int j = 0; j < tables[tableIndex].numColumns; j++) {
                         if (j==0)
                         {
@@ -150,6 +160,9 @@ void searchValue() {
             for (int i = 0; i < tables[tableIndex].numRecords; i++) {
                 if (tables[tableIndex].records[i].o_records[i][columnChoice - 1].floatValue == searchValue) {
                     // Exibir a linha que corresponde ao valor pesquisado
+                    for (int n = 0; n < tables[tableIndex].numColumns; n++) {
+                        printf("%s\t", tables[tableIndex].columns[n].name);
+                    }
                     for (int j = 0; j < tables[tableIndex].numColumns; j++) {
                         if (j==0)
                         {
@@ -181,6 +194,9 @@ void searchValue() {
             for (int i = 0; i < tables[tableIndex].numRecords; i++) {
                 if (tables[tableIndex].records[i].o_records[i][columnChoice - 1].doubleValue == searchValue) {
                     // Exibir a linha que corresponde ao valor pesquisado
+                    for (int n = 0; n < tables[tableIndex].numColumns; n++) {
+                        printf("%s\t", tables[tableIndex].columns[n].name);
+                    }
                     for (int j = 0; j < tables[tableIndex].numColumns; j++) {
                         if (j==0)
                         {
@@ -243,7 +259,13 @@ void searchValue() {
                         if (compareResult > 0) {
                             resultsCount++;
                             // Exibir o registro correspondente
+                                for (int n = 0; n < tables[tableIndex].numColumns; n++) {
+                                    printf("%s\t", tables[tableIndex].columns[n].name);
+                                }
+                                printf("\n");
+
                             for (int j = 0; j < tables[tableIndex].numColumns; j++) {
+                                
                                 if (j==0)
                                 {
                                     printf("%d\t", tables[tableIndex].records[i].primaryKey);    
@@ -269,6 +291,10 @@ void searchValue() {
                         if (compareResult >= 0) {
                             resultsCount++;
                             // Exibir o registro correspondente
+                                for (int n = 0; n < tables[tableIndex].numColumns; n++) {
+                                    printf("%s\t", tables[tableIndex].columns[n].name);
+                                }
+                                printf("\n");
                             for (int j = 0; j < tables[tableIndex].numColumns; j++) {
                                 if (j==0)
                                 {
@@ -295,7 +321,12 @@ void searchValue() {
                         if (compareResult == 0) {
                             resultsCount++;
                             // Exibir o registro correspondente
+                                for (int n = 0; n < tables[tableIndex].numColumns; n++) {
+                                    printf("%s\t", tables[tableIndex].columns[n].name);
+                                }
+                                printf("\n");
                             for (int j = 0; j < tables[tableIndex].numColumns; j++) {
+
                                 if (j==0)
                                 {
                                     printf("%d\t", tables[tableIndex].records[i].primaryKey);    
@@ -321,7 +352,12 @@ void searchValue() {
                         if (compareResult < 0) {
                             resultsCount++;
                             // Exibir o registro correspondente
+                                for (int n = 0; n < tables[tableIndex].numColumns; n++) {
+                                    printf("%s\t", tables[tableIndex].columns[n].name);
+                                }
+                                printf("\n");
                             for (int j = 0; j < tables[tableIndex].numColumns; j++) {
+                                
                                 if (j==0)
                                 {
                                     printf("%d\t", tables[tableIndex].records[i].primaryKey);    
@@ -347,7 +383,12 @@ void searchValue() {
                         if (compareResult <= 0) {
                             resultsCount++;
                             // Exibir o registro correspondente
+                                for (int n = 0; n < tables[tableIndex].numColumns; n++) {
+                                    printf("%s\t", tables[tableIndex].columns[n].name);
+                                }
+                                printf("\n");
                             for (int j = 0; j < tables[tableIndex].numColumns; j++) {
+                                
                                 if (j==0)
                                 {
                                     printf("%d\t", tables[tableIndex].records[i].primaryKey);    
@@ -373,7 +414,12 @@ void searchValue() {
                         if (strstr(tableValue, searchValue) != NULL) {
                             resultsCount++;
                             // Exibir o registro correspondente
+                                for (int n = 0; n < tables[tableIndex].numColumns; n++) {
+                                    printf("%s\t", tables[tableIndex].columns[n].name);
+                                }
+                                printf("\n");
                             for (int j = 0; j < tables[tableIndex].numColumns; j++) {
+                                
                                 if (j==0)
                                 {
                                     printf("%d\t", tables[tableIndex].records[i].primaryKey);    
@@ -407,5 +453,24 @@ void searchValue() {
             printf("Tipo de dado não suportado.\n");
             return;
         }
+    }
+    printf("\nVoltar ao Menu Principal?\n1. Sim\n2. Não\n");
+    int choice_inicio;
+    printf("Escolha uma opção: ");
+    scanf("%d", &choice_inicio);
+    if(choice_inicio == 1){
+        system("cls");
+        printf("Voltando ao Menu Principal...\n");
+        sleep(2);
+        system("cls");
+        return;
+    } else if (choice_inicio == 2){
+        system("cls");
+        searchValue();
+    } else {
+        printf("Valor inválido.\nVoltando ao Menu Principal...\n");
+        sleep(2);
+        system("cls");
+        return;
     }
 }
