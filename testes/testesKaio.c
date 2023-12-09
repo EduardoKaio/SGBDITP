@@ -12,8 +12,7 @@ typedef struct {
     char type[MAX_STRING_LENGTH];
 } Column;
 
-typedef struct
-{
+typedef struct {
     int primaryKey;
     union {
         int intValue;
@@ -22,7 +21,6 @@ typedef struct
         double doubleValue;
     } o_records[MAX_RECORDS][MAX_COLUMNS];
 } Records;
-
 
 typedef struct {
     char name[MAX_STRING_LENGTH];
@@ -169,6 +167,7 @@ void listTableData() {
         printf("\n");
     }
 }
+
 void listTables() {
     //loadTablesFromFile();
     printf("\n=== Lista de Tabelas ===\n");
@@ -300,12 +299,11 @@ void insertRecord() {
     saveTablesToFile();
     printf("Registro inserido com sucesso.\n");
 }
+
 void cleanupAndSave() {
     saveTablesToFile();
     // ... (liberar outros recursos, se necessário)
 }
-
-
 
 int main() {
     atexit(cleanupAndSave);

@@ -1,11 +1,15 @@
 Pessoa 3
 id int
-nome string
-idade int
-1 Kaio 20 
-2 Felipe 19 
+Nome string
+Idade int
+1 Felipe 19 
+2 Kaio 20 
 3 Marcos 20 
+Aluno 3
+id int
+Nome string
+Nota float
+1 Felipe 9.500000 
 Carro 2
 id int
-marca string
-1 Chevrolet 
+Marca string
