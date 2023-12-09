@@ -13,29 +13,29 @@ void saveTablesToFile() {
         exit(EXIT_FAILURE);
     }
 
-    for (int i = 0; i < numTables; i++) {
-        fprintf(file, "%s %d\n", tables[i].name, tables[i].numColumns);
+    for (int i = 0; i < num_tables; i++) {
+        fprintf(file, "%s %d\n", tables[i].name, tables[i].num_columns);
 
-        for (int j = 0; j < tables[i].numColumns; j++) {
+        for (int j = 0; j < tables[i].num_columns; j++) {
             fprintf(file, "%s %s\n", tables[i].columns[j].name, tables[i].columns[j].type);
         }
 
-        for (int j = 0; j < tables[i].numRecords; j++) {
-            for (int k = 0; k < tables[i].numColumns; k++) {
+        for (int j = 0; j < tables[i].num_records; j++) {
+            for (int k = 0; k < tables[i].num_columns; k++) {
 
                 if (k == 0) {
-                    fprintf(file, "%d ", tables[i].records[j].primaryKey);
+                    fprintf(file, "%d ", tables[i].records[j].primary_key);
                 } else {
                     if (strcmp(tables[i].columns[k].type, "int") == 0) {
-                        fprintf(file, "%d ", tables[i].records[j].o_records[j][k].intValue);
+                        fprintf(file, "%d ", tables[i].records[j].o_records[j][k].int_value);
                     } else if (strcmp(tables[i].columns[k].type, "char") == 0) {
-                        fprintf(file, "%s ", tables[i].records[j].o_records[j][k].stringValue);
+                        fprintf(file, "%s ", tables[i].records[j].o_records[j][k].string_value);
                     } else if (strcmp(tables[i].columns[k].type, "float") == 0) {
-                        fprintf(file, "%f ", tables[i].records[j].o_records[j][k].floatValue);
+                        fprintf(file, "%f ", tables[i].records[j].o_records[j][k].float_value);
                     } else if (strcmp(tables[i].columns[k].type, "double") == 0) {
-                        fprintf(file, "%lf ", tables[i].records[j].o_records[j][k].doubleValue);
+                        fprintf(file, "%lf ", tables[i].records[j].o_records[j][k].double_value);
                     }   else if (strcmp(tables[i].columns[k].type, "string") == 0) {
-                        fprintf(file, "%s ", tables[i].records[j].o_records[j][k].stringValue);
+                        fprintf(file, "%s ", tables[i].records[j].o_records[j][k].string_value);
                     } else {
                         fprintf(file, "Tipo não suportado ");
                     }
@@ -56,34 +56,34 @@ void loadTablesFromFile() {
         exit(EXIT_FAILURE);
     }
 
-    while (fscanf(file, "%s %d", tables[numTables].name, &tables[numTables].numColumns) == 2) {
-        for (int i = 0; i < tables[numTables].numColumns; i++) {
-            fscanf(file, "%s %s", tables[numTables].columns[i].name, tables[numTables].columns[i].type);
+    while (fscanf(file, "%s %d", tables[num_tables].name, &tables[num_tables].num_columns) == 2) {
+        for (int i = 0; i < tables[num_tables].num_columns; i++) {
+            fscanf(file, "%s %s", tables[num_tables].columns[i].name, tables[num_tables].columns[i].type);
         }
 
         // Carregar registros da tabela
-        tables[numTables].numRecords = 0; // Resetar o número de registros
+        tables[num_tables].num_records = 0; // Resetar o número de registros
 
-        while (fscanf(file, "%d ", &tables[numTables].records[tables[numTables].numRecords].primaryKey) == 1) {
-            for (int i = 1; i < tables[numTables].numColumns; i++) {
-                if (strcmp(tables[numTables].columns[i].type, "int") == 0) {
-                    fscanf(file, "%d ", &tables[numTables].records[tables[numTables].numRecords].o_records[tables[numTables].numRecords][i].intValue);
-                } else if (strcmp(tables[numTables].columns[i].type, "char") == 0) {
-                    fscanf(file, "%s ", tables[numTables].records[tables[numTables].numRecords].o_records[tables[numTables].numRecords][i].stringValue);
-                } else if (strcmp(tables[numTables].columns[i].type, "float") == 0) {
-                    fscanf(file, "%f ", &tables[numTables].records[tables[numTables].numRecords].o_records[tables[numTables].numRecords][i].floatValue);
-                } else if (strcmp(tables[numTables].columns[i].type, "double") == 0) {
-                    fscanf(file, "%lf ", &tables[numTables].records[tables[numTables].numRecords].o_records[tables[numTables].numRecords][i].doubleValue);
-                } else if (strcmp(tables[numTables].columns[i].type, "string") == 0) {
-                    fscanf(file, "%s ", tables[numTables].records[tables[numTables].numRecords].o_records[tables[numTables].numRecords][i].stringValue);
+        while (fscanf(file, "%d ", &tables[num_tables].records[tables[num_tables].num_records].primary_key) == 1) {
+            for (int i = 1; i < tables[num_tables].num_columns; i++) {
+                if (strcmp(tables[num_tables].columns[i].type, "int") == 0) {
+                    fscanf(file, "%d ", &tables[num_tables].records[tables[num_tables].num_records].o_records[tables[num_tables].num_records][i].int_value);
+                } else if (strcmp(tables[num_tables].columns[i].type, "char") == 0) {
+                    fscanf(file, "%s ", tables[num_tables].records[tables[num_tables].num_records].o_records[tables[num_tables].num_records][i].string_value);
+                } else if (strcmp(tables[num_tables].columns[i].type, "float") == 0) {
+                    fscanf(file, "%f ", &tables[num_tables].records[tables[num_tables].num_records].o_records[tables[num_tables].num_records][i].float_value);
+                } else if (strcmp(tables[num_tables].columns[i].type, "double") == 0) {
+                    fscanf(file, "%lf ", &tables[num_tables].records[tables[num_tables].num_records].o_records[tables[num_tables].num_records][i].double_value);
+                } else if (strcmp(tables[num_tables].columns[i].type, "string") == 0) {
+                    fscanf(file, "%s ", tables[num_tables].records[tables[num_tables].num_records].o_records[tables[num_tables].num_records][i].string_value);
                 }
             }
 
-            tables[numTables].numRecords++;
+            tables[num_tables].num_records++;
         }
 
-        // printf("%d\n", numTables);
-        numTables++;
+        // printf("%d\n", num_tables);
+        num_tables++;
     }
 
     fclose(file);

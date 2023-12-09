@@ -15,25 +15,25 @@ typedef struct {
 } Column;
 
 typedef struct {
-    int primaryKey;
+    int primary_key;
     union {
-        int intValue;
-        char stringValue[MAX_STRING_LENGTH];
-        float floatValue;
-        double doubleValue;
+        int int_value;
+        char string_value[MAX_STRING_LENGTH];
+        float float_value;
+        double double_value;
     } o_records[MAX_RECORDS][MAX_COLUMNS];
 } Records;
 
 typedef struct {
     char name[MAX_STRING_LENGTH];
     Column columns[MAX_COLUMNS];
-    int numColumns;
+    int num_columns;
     Records records[MAX_RECORDS];
-    int numRecords;
+    int num_records;
 } Table;
 
 extern Table tables[MAX_TABLES];
-extern int numTables;
+extern int num_tables;
 
 void createTable();
 void insertRecord();

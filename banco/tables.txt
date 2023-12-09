@@ -6,6 +6,7 @@ idade int
 2 Maria 21 
 4 Felipe 50 
 3 Pedro 25 
+7 Marcos 50 
 Cliente 2
 id int
 pedido int

@@ -5,64 +5,68 @@
 #include "search.h"
 
 void searchValue() {
-    char tableName[MAX_STRING_LENGTH];
-    int tableIndex = -1;
+    char table_name[MAX_STRING_LENGTH];
+    int table_index = -1;
 
     printf("Digite o nome da tabela para realizar a pesquisa: ");
-    scanf("%s", tableName);
+    scanf("%s", table_name);
 
-    for (int i = 0; i < numTables; i++) {
-        if (strcmp(tables[i].name, tableName) == 0) {
-            tableIndex = i;
+    for (int i = 0; i < num_tables; i++) {
+        if (strcmp(tables[i].name, table_name) == 0) {
+            table_index = i;
             break;
         }
     }
 
-    if (tableIndex == -1) {
+    if (table_index == -1) {
         printf("Tabela não encontrada.\n");
         return;
     }
 
     // Exibir colunas disponíveis
-    printf("Colunas disponíveis na tabela %s:\n", tableName);
-    for (int i = 0; i < tables[tableIndex].numColumns; i++) {
-        printf("%d. %s\n", i + 1, tables[tableIndex].columns[i].name);
+    printf("Colunas disponíveis na tabela %s:\n", table_name);
+    for (int i = 0; i < tables[table_index].num_columns; i++) {
+        printf("%d. %s\n", i + 1, tables[table_index].columns[i].name);
     }
 
-    int columnChoice;
+    int column_choice;
     printf("Escolha o número da coluna para pesquisa: ");
-    scanf("%d", &columnChoice);
+    scanf("%d", &column_choice);
     
-    if (columnChoice==1){
+    if (column_choice==1){
         printf("Digite o valor para pesquisa: ");
         
-        int searchValue;
-        scanf("%d", &searchValue);
+        int search_value;
+        scanf("%d", &search_value);
 
         // Lógica de pesquisa para valores inteiros
         printf("Resultados da pesquisa:\n");
-        for (int i = 0; i < tables[tableIndex].numRecords; i++) {
-            if (tables[tableIndex].records[i].primaryKey == searchValue) {
-                // Exibir a linha que corresponde ao valor pesquisado
-                for (int n = 0; n < tables[tableIndex].numColumns; n++) {
-                    printf("%s\t", tables[tableIndex].columns[n].name);
-                }
+        printf("\n=== Dados da Tabela %s ===\n", table_name);
+
+        // Exibir cabeçalho da tabela
+        for (int i = 0; i < tables[table_index].num_columns; i++) {
+            printf("%s\t", tables[table_index].columns[i].name);
+        }
+        printf("\n");
+        
+        for (int i = 0; i < tables[table_index].num_records; i++) {
+            if (tables[table_index].records[i].primary_key == search_value) {
                 printf("\n");
-                for (int j = 0; j < tables[tableIndex].numColumns; j++) {
+                for (int j = 0; j < tables[table_index].num_columns; j++) {
                     if (j==0) {
-                        printf("%d\t", tables[tableIndex].records[i].primaryKey);
+                        printf("%d\t", tables[table_index].records[i].primary_key);
                     } else {
                     
-                        if (strcmp(tables[tableIndex].columns[j].type, "int") == 0) {
-                            printf("%d\t", tables[tableIndex].records[i].o_records[i][j].intValue);
-                        } else if (strcmp(tables[tableIndex].columns[j].type, "char") == 0) {
-                            printf("%s\t", tables[tableIndex].records[i].o_records[i][j].stringValue);
-                        } else if (strcmp(tables[tableIndex].columns[j].type, "float") == 0) {
-                            printf("%0.2f\t", tables[tableIndex].records[i].o_records[i][j].floatValue);
-                        } else if (strcmp(tables[tableIndex].columns[j].type, "double") == 0) {
-                            printf("%0.2lf\t", tables[tableIndex].records[i].o_records[i][j].doubleValue);
-                        } else if (strcmp(tables[tableIndex].columns[j].type, "string") == 0) {
-                            printf("%s\t", tables[tableIndex].records[i].o_records[i][j].stringValue);
+                        if (strcmp(tables[table_index].columns[j].type, "int") == 0) {
+                            printf("%d\t", tables[table_index].records[i].o_records[i][j].int_value);
+                        } else if (strcmp(tables[table_index].columns[j].type, "char") == 0) {
+                            printf("%s\t", tables[table_index].records[i].o_records[i][j].string_value);
+                        } else if (strcmp(tables[table_index].columns[j].type, "float") == 0) {
+                            printf("%0.2f\t", tables[table_index].records[i].o_records[i][j].float_value);
+                        } else if (strcmp(tables[table_index].columns[j].type, "double") == 0) {
+                            printf("%0.2lf\t", tables[table_index].records[i].o_records[i][j].double_value);
+                        } else if (strcmp(tables[table_index].columns[j].type, "string") == 0) {
+                            printf("%s\t", tables[table_index].records[i].o_records[i][j].string_value);
                         }
                     }
                 }
@@ -71,216 +75,238 @@ void searchValue() {
         }
     } else { 
     
-        if (columnChoice < 1 || columnChoice > tables[tableIndex].numColumns) {
+        if (column_choice < 1 || column_choice > tables[table_index].num_columns) {
             printf("Opção inválida.\n");
             return;
         }
 
         // Obter o tipo da coluna escolhida
-        char columnType[MAX_STRING_LENGTH];
-        strcpy(columnType, tables[tableIndex].columns[columnChoice - 1].type);
+        char column_type[MAX_STRING_LENGTH];
+        strcpy(column_type, tables[table_index].columns[column_choice - 1].type);
 
         // Solicitar o valor para pesquisa
         printf("Digite o valor para pesquisa: ");
 
-        if (strcmp(columnType, "int") == 0) {
-            int searchValue;
-            scanf("%d", &searchValue);
+        if (strcmp(column_type, "int") == 0) {
+            int search_value;
+            scanf("%d", &search_value);
 
             // Lógica de pesquisa para valores inteiros
             printf("Resultados da pesquisa:\n");
-            for (int i = 0; i < tables[tableIndex].numRecords; i++) {
-                if (tables[tableIndex].records[i].o_records[i][columnChoice - 1].intValue == searchValue) {
-                    // Exibir a linha que corresponde ao valor pesquisado
-                    for (int n = 0; n < tables[tableIndex].numColumns; n++) {
-                        printf("%s\t", tables[tableIndex].columns[n].name);
-                    }
-                    for (int j = 0; j < tables[tableIndex].numColumns; j++) {
+            printf("\n=== Dados da Tabela %s ===\n", table_name);
+
+            // Exibir cabeçalho da tabela
+            for (int i = 0; i < tables[table_index].num_columns; i++) {
+                printf("%s\t", tables[table_index].columns[i].name);
+            }
+            printf("\n");
+
+            for (int i = 0; i < tables[table_index].num_records; i++) {
+                if (tables[table_index].records[i].o_records[i][column_choice - 1].int_value == search_value) {
+                    for (int j = 0; j < tables[table_index].num_columns; j++) {
                         if (j==0)
                         {
-                            printf("%d\t", tables[tableIndex].records[i].primaryKey);
+                            printf("%d\t", tables[table_index].records[i].primary_key);
                         } else {
                         
-                            if (strcmp(tables[tableIndex].columns[j].type, "int") == 0) {
-                                printf("%d\t", tables[tableIndex].records[i].o_records[i][j].intValue);
-                            } else if (strcmp(tables[tableIndex].columns[j].type, "char") == 0) {
-                                printf("%s\t", tables[tableIndex].records[i].o_records[i][j].stringValue);
-                            } else if (strcmp(tables[tableIndex].columns[j].type, "float") == 0) {
-                                printf("%0.2f\t", tables[tableIndex].records[i].o_records[i][j].floatValue);
-                            } else if (strcmp(tables[tableIndex].columns[j].type, "double") == 0) {
-                                printf("%0.2lf\t", tables[tableIndex].records[i].o_records[i][j].doubleValue);
-                            } else if (strcmp(tables[tableIndex].columns[j].type, "string") == 0) {
-                                printf("%s\t", tables[tableIndex].records[i].o_records[i][j].stringValue);
+                            if (strcmp(tables[table_index].columns[j].type, "int") == 0) {
+                                printf("%d\t", tables[table_index].records[i].o_records[i][j].int_value);
+                            } else if (strcmp(tables[table_index].columns[j].type, "char") == 0) {
+                                printf("%s\t", tables[table_index].records[i].o_records[i][j].string_value);
+                            } else if (strcmp(tables[table_index].columns[j].type, "float") == 0) {
+                                printf("%0.2f\t", tables[table_index].records[i].o_records[i][j].float_value);
+                            } else if (strcmp(tables[table_index].columns[j].type, "double") == 0) {
+                                printf("%0.2lf\t", tables[table_index].records[i].o_records[i][j].double_value);
+                            } else if (strcmp(tables[table_index].columns[j].type, "string") == 0) {
+                                printf("%s\t", tables[table_index].records[i].o_records[i][j].string_value);
                             }
                         }
                     }
                     printf("\n");
                 }
             }
-        } else if (strcmp(columnType, "char") == 0) {
-            char searchValue[MAX_STRING_LENGTH];
-            scanf("%s", searchValue);
+        } else if (strcmp(column_type, "char") == 0) {
+            char search_value[MAX_STRING_LENGTH];
+            scanf("%s", search_value);
 
             // Lógica de pesquisa para strings
             printf("Resultados da pesquisa:\n");
-            for (int i = 0; i < tables[tableIndex].numRecords; i++) {
-                if (strcmp(tables[tableIndex].records[i].o_records[i][columnChoice - 1].stringValue, searchValue) == 0) {
-                    // Exibir a linha que corresponde ao valor pesquisado
-                    for (int n = 0; n < tables[tableIndex].numColumns; n++) {
-                        printf("%s\t", tables[tableIndex].columns[n].name);
-                    }
-                    for (int j = 0; j < tables[tableIndex].numColumns; j++) {
+            printf("\n=== Dados da Tabela %s ===\n", table_name);
+
+            // Exibir cabeçalho da tabela
+            for (int i = 0; i < tables[table_index].num_columns; i++) {
+                printf("%s\t", tables[table_index].columns[i].name);
+            }
+            printf("\n");
+
+            for (int i = 0; i < tables[table_index].num_records; i++) {
+                if (strcmp(tables[table_index].records[i].o_records[i][column_choice - 1].string_value, search_value) == 0) {
+                    for (int j = 0; j < tables[table_index].num_columns; j++) {
                         if (j==0)
                         {
-                            printf("%d\t", tables[tableIndex].records[i].primaryKey);
+                            printf("%d\t", tables[table_index].records[i].primary_key);
                         } else {
                         
-                            if (strcmp(tables[tableIndex].columns[j].type, "int") == 0) {
-                                printf("%d\t", tables[tableIndex].records[i].o_records[i][j].intValue);
-                            } else if (strcmp(tables[tableIndex].columns[j].type, "char") == 0) {
-                                printf("%s\t", tables[tableIndex].records[i].o_records[i][j].stringValue);
-                            } else if (strcmp(tables[tableIndex].columns[j].type, "float") == 0) {
-                                printf("%0.2f\t", tables[tableIndex].records[i].o_records[i][j].floatValue);
-                            } else if (strcmp(tables[tableIndex].columns[j].type, "double") == 0) {
-                                printf("%0.2lf\t", tables[tableIndex].records[i].o_records[i][j].doubleValue);
-                            } else if (strcmp(tables[tableIndex].columns[j].type, "string") == 0) {
-                                printf("%s\t", tables[tableIndex].records[i].o_records[i][j].stringValue);
+                            if (strcmp(tables[table_index].columns[j].type, "int") == 0) {
+                                printf("%d\t", tables[table_index].records[i].o_records[i][j].int_value);
+                            } else if (strcmp(tables[table_index].columns[j].type, "char") == 0) {
+                                printf("%s\t", tables[table_index].records[i].o_records[i][j].string_value);
+                            } else if (strcmp(tables[table_index].columns[j].type, "float") == 0) {
+                                printf("%0.2f\t", tables[table_index].records[i].o_records[i][j].float_value);
+                            } else if (strcmp(tables[table_index].columns[j].type, "double") == 0) {
+                                printf("%0.2lf\t", tables[table_index].records[i].o_records[i][j].double_value);
+                            } else if (strcmp(tables[table_index].columns[j].type, "string") == 0) {
+                                printf("%s\t", tables[table_index].records[i].o_records[i][j].string_value);
                             }
                         }
                     }
                     printf("\n");
                 }
             }
-        } else if (strcmp(columnType, "float") == 0) {
-            float searchValue;
-            scanf("%f", &searchValue);
+        } else if (strcmp(column_type, "float") == 0) {
+            float search_value;
+            scanf("%f", &search_value);
 
             // Lógica de pesquisa para valores float
             printf("Resultados da pesquisa:\n");
-            for (int i = 0; i < tables[tableIndex].numRecords; i++) {
-                if (tables[tableIndex].records[i].o_records[i][columnChoice - 1].floatValue == searchValue) {
-                    // Exibir a linha que corresponde ao valor pesquisado
-                    for (int n = 0; n < tables[tableIndex].numColumns; n++) {
-                        printf("%s\t", tables[tableIndex].columns[n].name);
-                    }
-                    for (int j = 0; j < tables[tableIndex].numColumns; j++) {
+
+            printf("\n=== Dados da Tabela %s ===\n", table_name);
+
+            // Exibir cabeçalho da tabela
+            for (int i = 0; i < tables[table_index].num_columns; i++) {
+                printf("%s\t", tables[table_index].columns[i].name);
+            }
+            printf("\n");
+
+            for (int i = 0; i < tables[table_index].num_records; i++) {
+                if (tables[table_index].records[i].o_records[i][column_choice - 1].float_value == search_value) {
+                    for (int j = 0; j < tables[table_index].num_columns; j++) {
                         if (j==0)
                         {
-                            printf("%d\t", tables[tableIndex].records[i].primaryKey);
+                            printf("%d\t", tables[table_index].records[i].primary_key);
                         } else {
                         
-                            if (strcmp(tables[tableIndex].columns[j].type, "int") == 0) {
-                                printf("%d\t", tables[tableIndex].records[i].o_records[i][j].intValue);
-                            } else if (strcmp(tables[tableIndex].columns[j].type, "char") == 0) {
-                                printf("%s\t", tables[tableIndex].records[i].o_records[i][j].stringValue);
-                            } else if (strcmp(tables[tableIndex].columns[j].type, "float") == 0) {
-                                printf("%0.2f\t", tables[tableIndex].records[i].o_records[i][j].floatValue);
-                            } else if (strcmp(tables[tableIndex].columns[j].type, "double") == 0) {
-                                printf("%0.2lf\t", tables[tableIndex].records[i].o_records[i][j].doubleValue);
-                            } else if (strcmp(tables[tableIndex].columns[j].type, "string") == 0) {
-                                printf("%s\t", tables[tableIndex].records[i].o_records[i][j].stringValue);
+                            if (strcmp(tables[table_index].columns[j].type, "int") == 0) {
+                                printf("%d\t", tables[table_index].records[i].o_records[i][j].int_value);
+                            } else if (strcmp(tables[table_index].columns[j].type, "char") == 0) {
+                                printf("%s\t", tables[table_index].records[i].o_records[i][j].string_value);
+                            } else if (strcmp(tables[table_index].columns[j].type, "float") == 0) {
+                                printf("%0.2f\t", tables[table_index].records[i].o_records[i][j].float_value);
+                            } else if (strcmp(tables[table_index].columns[j].type, "double") == 0) {
+                                printf("%0.2lf\t", tables[table_index].records[i].o_records[i][j].double_value);
+                            } else if (strcmp(tables[table_index].columns[j].type, "string") == 0) {
+                                printf("%s\t", tables[table_index].records[i].o_records[i][j].string_value);
                             }
                         }
                     }
                     printf("\n");
                 }
             }
-        } else if (strcmp(columnType, "double") == 0) {
-            double searchValue;
-            scanf("%lf", &searchValue);
+        } else if (strcmp(column_type, "double") == 0) {
+            double search_value;
+            scanf("%lf", &search_value);
 
             // Lógica de pesquisa para valores double
             printf("Resultados da pesquisa:\n");
-            for (int i = 0; i < tables[tableIndex].numRecords; i++) {
-                if (tables[tableIndex].records[i].o_records[i][columnChoice - 1].doubleValue == searchValue) {
-                    // Exibir a linha que corresponde ao valor pesquisado
-                    for (int n = 0; n < tables[tableIndex].numColumns; n++) {
-                        printf("%s\t", tables[tableIndex].columns[n].name);
-                    }
-                    for (int j = 0; j < tables[tableIndex].numColumns; j++) {
+
+            printf("\n=== Dados da Tabela %s ===\n", table_name);
+
+            // Exibir cabeçalho da tabela
+            for (int i = 0; i < tables[table_index].num_columns; i++) {
+                printf("%s\t", tables[table_index].columns[i].name);
+            }
+            printf("\n");
+            
+            for (int i = 0; i < tables[table_index].num_records; i++) {
+                if (tables[table_index].records[i].o_records[i][column_choice - 1].double_value == search_value) {
+                    for (int j = 0; j < tables[table_index].num_columns; j++) {
                         if (j==0)
                         {
-                            printf("%d\t", tables[tableIndex].records[i].primaryKey);
+                            printf("%d\t", tables[table_index].records[i].primary_key);
                         } else {
                         
-                            if (strcmp(tables[tableIndex].columns[j].type, "int") == 0) {
-                                printf("%d\t", tables[tableIndex].records[i].o_records[i][j].intValue);
-                            } else if (strcmp(tables[tableIndex].columns[j].type, "char") == 0) {
-                                printf("%s\t", tables[tableIndex].records[i].o_records[i][j].stringValue);
-                            } else if (strcmp(tables[tableIndex].columns[j].type, "float") == 0) {
-                                printf("%0.2f\t", tables[tableIndex].records[i].o_records[i][j].floatValue);
-                            } else if (strcmp(tables[tableIndex].columns[j].type, "double") == 0) {
-                                printf("%0.2lf\t", tables[tableIndex].records[i].o_records[i][j].doubleValue);
-                            } else if (strcmp(tables[tableIndex].columns[j].type, "string") == 0) {
-                                printf("%s\t", tables[tableIndex].records[i].o_records[i][j].stringValue);
+                            if (strcmp(tables[table_index].columns[j].type, "int") == 0) {
+                                printf("%d\t", tables[table_index].records[i].o_records[i][j].int_value);
+                            } else if (strcmp(tables[table_index].columns[j].type, "char") == 0) {
+                                printf("%s\t", tables[table_index].records[i].o_records[i][j].string_value);
+                            } else if (strcmp(tables[table_index].columns[j].type, "float") == 0) {
+                                printf("%0.2f\t", tables[table_index].records[i].o_records[i][j].float_value);
+                            } else if (strcmp(tables[table_index].columns[j].type, "double") == 0) {
+                                printf("%0.2lf\t", tables[table_index].records[i].o_records[i][j].double_value);
+                            } else if (strcmp(tables[table_index].columns[j].type, "string") == 0) {
+                                printf("%s\t", tables[table_index].records[i].o_records[i][j].string_value);
                             }
                         }
                     }
                     printf("\n");
                 }
             }
-        } else if (strcmp(columnType, "string") == 0) {
-            char searchValue[MAX_STRING_LENGTH];
-            scanf("%s", searchValue);
+        } else if (strcmp(column_type, "string") == 0) {
+            char search_value[MAX_STRING_LENGTH];
+            scanf("%s", search_value);
 
             // Opções de pesquisa para strings
             printf("Opções de pesquisa para strings:\n");
-            printf("1. Valores maiores que %s\n", searchValue);
-            printf("2. Valores maiores ou iguais a %s\n", searchValue);
-            printf("3. Valores iguais a %s\n", searchValue);
-            printf("4. Valores menores que %s\n", searchValue);
-            printf("5. Valores menores ou iguais a %s\n", searchValue);
-            printf("6. Valores próximos a %s\n", searchValue);
+            printf("1. Valores maiores que %s\n", search_value);
+            printf("2. Valores maiores ou iguais a %s\n", search_value);
+            printf("3. Valores iguais a %s\n", search_value);
+            printf("4. Valores menores que %s\n", search_value);
+            printf("5. Valores menores ou iguais a %s\n", search_value);
+            printf("6. Valores próximos a %s\n", search_value);
 
-            int searchOption;
+            int search_option;
             printf("Escolha a opção de pesquisa: ");
-            scanf("%d", &searchOption);
+            scanf("%d", &search_option);
 
             // Lógica de pesquisa para strings com as opções escolhidas
-            int resultsCount = 0;
+            int results_count = 0;
             printf("Resultados da pesquisa:\n");
-            for (int i = 0; i < tables[tableIndex].numRecords; i++) {               
-                char tableValue[MAX_STRING_LENGTH];
-                strcpy(tableValue, tables[tableIndex].records[i].o_records[i][columnChoice - 1].stringValue);
 
-                for (int k = 0; k < strlen(tableValue); k++) {
-                    tableValue[k] = toupper(tableValue[k]);
+            printf("\n=== Dados da Tabela %s ===\n", table_name);
+
+            // Exibir cabeçalho da tabela
+            for (int i = 0; i < tables[table_index].num_columns; i++) {
+                printf("%s\t", tables[table_index].columns[i].name);
+            }
+            printf("\n");
+
+            for (int i = 0; i < tables[table_index].num_records; i++) {               
+                char table_value[MAX_STRING_LENGTH];
+                strcpy(table_value, tables[table_index].records[i].o_records[i][column_choice - 1].string_value);
+
+                for (int k = 0; k < strlen(table_value); k++) {
+                    table_value[k] = toupper(table_value[k]);
                 }
                 
-                for (int k = 0; k < strlen(searchValue); k++) {
-                    searchValue[k] = toupper(searchValue[k]);
+                for (int k = 0; k < strlen(search_value); k++) {
+                    search_value[k] = toupper(search_value[k]);
                 }
 
-                int compareResult = strcmp(tableValue, searchValue);
+                int compare_result = strcmp(table_value, search_value);
 
                 // Implementar lógica de comparação com base na opção escolhida
-                switch (searchOption) {
+                switch (search_option) {
                     case 1:
-                        if (compareResult > 0) {
-                            resultsCount++;
+                        if (compare_result > 0) {
+                            results_count++;
                             // Exibir o registro correspondente
-                                for (int n = 0; n < tables[tableIndex].numColumns; n++) {
-                                    printf("%s\t", tables[tableIndex].columns[n].name);
-                                }
-                                printf("\n");
-
-                            for (int j = 0; j < tables[tableIndex].numColumns; j++) {
+                            for (int j = 0; j < tables[table_index].num_columns; j++) {
                                 
                                 if (j==0)
                                 {
-                                    printf("%d\t", tables[tableIndex].records[i].primaryKey);    
+                                    printf("%d\t", tables[table_index].records[i].primary_key);    
                                 } else {
                                 
-                                    if (strcmp(tables[tableIndex].columns[j].type, "int") == 0) {
-                                        printf("%d\t", tables[tableIndex].records[i].o_records[i][j].intValue);
-                                    } else if (strcmp(tables[tableIndex].columns[j].type, "char") == 0) {
-                                        printf("%s\t", tables[tableIndex].records[i].o_records[i][j].stringValue);
-                                    } else if (strcmp(tables[tableIndex].columns[j].type, "float") == 0) {
-                                        printf("%0.2f\t", tables[tableIndex].records[i].o_records[i][j].floatValue);
-                                    } else if (strcmp(tables[tableIndex].columns[j].type, "double") == 0) {
-                                        printf("%0.2lf\t", tables[tableIndex].records[i].o_records[i][j].doubleValue);
-                                    } else if (strcmp(tables[tableIndex].columns[j].type, "string") == 0) {
-                                        printf("%s\t", tables[tableIndex].records[i].o_records[i][j].stringValue);
+                                    if (strcmp(tables[table_index].columns[j].type, "int") == 0) {
+                                        printf("%d\t", tables[table_index].records[i].o_records[i][j].int_value);
+                                    } else if (strcmp(tables[table_index].columns[j].type, "char") == 0) {
+                                        printf("%s\t", tables[table_index].records[i].o_records[i][j].string_value);
+                                    } else if (strcmp(tables[table_index].columns[j].type, "float") == 0) {
+                                        printf("%0.2f\t", tables[table_index].records[i].o_records[i][j].float_value);
+                                    } else if (strcmp(tables[table_index].columns[j].type, "double") == 0) {
+                                        printf("%0.2lf\t", tables[table_index].records[i].o_records[i][j].double_value);
+                                    } else if (strcmp(tables[table_index].columns[j].type, "string") == 0) {
+                                        printf("%s\t", tables[table_index].records[i].o_records[i][j].string_value);
                                     }
                                 }
                             }
@@ -288,29 +314,25 @@ void searchValue() {
                         }
                         break;
                     case 2:
-                        if (compareResult >= 0) {
-                            resultsCount++;
+                        if (compare_result >= 0) {
+                            results_count++;
                             // Exibir o registro correspondente
-                                for (int n = 0; n < tables[tableIndex].numColumns; n++) {
-                                    printf("%s\t", tables[tableIndex].columns[n].name);
-                                }
-                                printf("\n");
-                            for (int j = 0; j < tables[tableIndex].numColumns; j++) {
+                            for (int j = 0; j < tables[table_index].num_columns; j++) {
                                 if (j==0)
                                 {
-                                    printf("%d\t", tables[tableIndex].records[i].primaryKey);    
+                                    printf("%d\t", tables[table_index].records[i].primary_key);    
                                 } else {
                                 
-                                    if (strcmp(tables[tableIndex].columns[j].type, "int") == 0) {
-                                        printf("%d\t", tables[tableIndex].records[i].o_records[i][j].intValue);
-                                    } else if (strcmp(tables[tableIndex].columns[j].type, "char") == 0) {
-                                        printf("%s\t", tables[tableIndex].records[i].o_records[i][j].stringValue);
-                                    } else if (strcmp(tables[tableIndex].columns[j].type, "float") == 0) {
-                                        printf("%0.2f\t", tables[tableIndex].records[i].o_records[i][j].floatValue);
-                                    } else if (strcmp(tables[tableIndex].columns[j].type, "double") == 0) {
-                                        printf("%0.2lf\t", tables[tableIndex].records[i].o_records[i][j].doubleValue);
-                                    } else if (strcmp(tables[tableIndex].columns[j].type, "string") == 0) {
-                                        printf("%s\t", tables[tableIndex].records[i].o_records[i][j].stringValue);
+                                    if (strcmp(tables[table_index].columns[j].type, "int") == 0) {
+                                        printf("%d\t", tables[table_index].records[i].o_records[i][j].int_value);
+                                    } else if (strcmp(tables[table_index].columns[j].type, "char") == 0) {
+                                        printf("%s\t", tables[table_index].records[i].o_records[i][j].string_value);
+                                    } else if (strcmp(tables[table_index].columns[j].type, "float") == 0) {
+                                        printf("%0.2f\t", tables[table_index].records[i].o_records[i][j].float_value);
+                                    } else if (strcmp(tables[table_index].columns[j].type, "double") == 0) {
+                                        printf("%0.2lf\t", tables[table_index].records[i].o_records[i][j].double_value);
+                                    } else if (strcmp(tables[table_index].columns[j].type, "string") == 0) {
+                                        printf("%s\t", tables[table_index].records[i].o_records[i][j].string_value);
                                     }
                                 }
                             }
@@ -318,30 +340,26 @@ void searchValue() {
                         }
                         break;
                     case 3:
-                        if (compareResult == 0) {
-                            resultsCount++;
+                        if (compare_result == 0) {
+                            results_count++;
                             // Exibir o registro correspondente
-                                for (int n = 0; n < tables[tableIndex].numColumns; n++) {
-                                    printf("%s\t", tables[tableIndex].columns[n].name);
-                                }
-                                printf("\n");
-                            for (int j = 0; j < tables[tableIndex].numColumns; j++) {
+                            for (int j = 0; j < tables[table_index].num_columns; j++) {
 
                                 if (j==0)
                                 {
-                                    printf("%d\t", tables[tableIndex].records[i].primaryKey);    
+                                    printf("%d\t", tables[table_index].records[i].primary_key);    
                                 } else {
                                 
-                                    if (strcmp(tables[tableIndex].columns[j].type, "int") == 0) {
-                                        printf("%d\t", tables[tableIndex].records[i].o_records[i][j].intValue);
-                                    } else if (strcmp(tables[tableIndex].columns[j].type, "char") == 0) {
-                                        printf("%s\t", tables[tableIndex].records[i].o_records[i][j].stringValue);
-                                    } else if (strcmp(tables[tableIndex].columns[j].type, "float") == 0) {
-                                        printf("%0.2f\t", tables[tableIndex].records[i].o_records[i][j].floatValue);
-                                    } else if (strcmp(tables[tableIndex].columns[j].type, "double") == 0) {
-                                        printf("%0.2lf\t", tables[tableIndex].records[i].o_records[i][j].doubleValue);
-                                    } else if (strcmp(tables[tableIndex].columns[j].type, "string") == 0) {
-                                        printf("%s\t", tables[tableIndex].records[i].o_records[i][j].stringValue);
+                                    if (strcmp(tables[table_index].columns[j].type, "int") == 0) {
+                                        printf("%d\t", tables[table_index].records[i].o_records[i][j].int_value);
+                                    } else if (strcmp(tables[table_index].columns[j].type, "char") == 0) {
+                                        printf("%s\t", tables[table_index].records[i].o_records[i][j].string_value);
+                                    } else if (strcmp(tables[table_index].columns[j].type, "float") == 0) {
+                                        printf("%0.2f\t", tables[table_index].records[i].o_records[i][j].float_value);
+                                    } else if (strcmp(tables[table_index].columns[j].type, "double") == 0) {
+                                        printf("%0.2lf\t", tables[table_index].records[i].o_records[i][j].double_value);
+                                    } else if (strcmp(tables[table_index].columns[j].type, "string") == 0) {
+                                        printf("%s\t", tables[table_index].records[i].o_records[i][j].string_value);
                                     }
                                 }
                             }
@@ -349,30 +367,26 @@ void searchValue() {
                         }
                         break;
                     case 4:
-                        if (compareResult < 0) {
-                            resultsCount++;
+                        if (compare_result < 0) {
+                            results_count++;
                             // Exibir o registro correspondente
-                                for (int n = 0; n < tables[tableIndex].numColumns; n++) {
-                                    printf("%s\t", tables[tableIndex].columns[n].name);
-                                }
-                                printf("\n");
-                            for (int j = 0; j < tables[tableIndex].numColumns; j++) {
+                            for (int j = 0; j < tables[table_index].num_columns; j++) {
                                 
                                 if (j==0)
                                 {
-                                    printf("%d\t", tables[tableIndex].records[i].primaryKey);    
+                                    printf("%d\t", tables[table_index].records[i].primary_key);    
                                 } else {
                                 
-                                    if (strcmp(tables[tableIndex].columns[j].type, "int") == 0) {
-                                        printf("%d\t", tables[tableIndex].records[i].o_records[i][j].intValue);
-                                    } else if (strcmp(tables[tableIndex].columns[j].type, "char") == 0) {
-                                        printf("%s\t", tables[tableIndex].records[i].o_records[i][j].stringValue);
-                                    } else if (strcmp(tables[tableIndex].columns[j].type, "float") == 0) {
-                                        printf("%0.2f\t", tables[tableIndex].records[i].o_records[i][j].floatValue);
-                                    } else if (strcmp(tables[tableIndex].columns[j].type, "double") == 0) {
-                                        printf("%0.2lf\t", tables[tableIndex].records[i].o_records[i][j].doubleValue);
-                                    } else if (strcmp(tables[tableIndex].columns[j].type, "string") == 0) {
-                                        printf("%s\t", tables[tableIndex].records[i].o_records[i][j].stringValue);
+                                    if (strcmp(tables[table_index].columns[j].type, "int") == 0) {
+                                        printf("%d\t", tables[table_index].records[i].o_records[i][j].int_value);
+                                    } else if (strcmp(tables[table_index].columns[j].type, "char") == 0) {
+                                        printf("%s\t", tables[table_index].records[i].o_records[i][j].string_value);
+                                    } else if (strcmp(tables[table_index].columns[j].type, "float") == 0) {
+                                        printf("%0.2f\t", tables[table_index].records[i].o_records[i][j].float_value);
+                                    } else if (strcmp(tables[table_index].columns[j].type, "double") == 0) {
+                                        printf("%0.2lf\t", tables[table_index].records[i].o_records[i][j].double_value);
+                                    } else if (strcmp(tables[table_index].columns[j].type, "string") == 0) {
+                                        printf("%s\t", tables[table_index].records[i].o_records[i][j].string_value);
                                     }
                                 }
                             }
@@ -380,30 +394,26 @@ void searchValue() {
                         }
                         break;
                     case 5:
-                        if (compareResult <= 0) {
-                            resultsCount++;
+                        if (compare_result <= 0) {
+                            results_count++;
                             // Exibir o registro correspondente
-                                for (int n = 0; n < tables[tableIndex].numColumns; n++) {
-                                    printf("%s\t", tables[tableIndex].columns[n].name);
-                                }
-                                printf("\n");
-                            for (int j = 0; j < tables[tableIndex].numColumns; j++) {
+                            for (int j = 0; j < tables[table_index].num_columns; j++) {
                                 
                                 if (j==0)
                                 {
-                                    printf("%d\t", tables[tableIndex].records[i].primaryKey);    
+                                    printf("%d\t", tables[table_index].records[i].primary_key);    
                                 } else {
                                 
-                                    if (strcmp(tables[tableIndex].columns[j].type, "int") == 0) {
-                                        printf("%d\t", tables[tableIndex].records[i].o_records[i][j].intValue);
-                                    } else if (strcmp(tables[tableIndex].columns[j].type, "char") == 0) {
-                                        printf("%s\t", tables[tableIndex].records[i].o_records[i][j].stringValue);
-                                    } else if (strcmp(tables[tableIndex].columns[j].type, "float") == 0) {
-                                        printf("%0.2f\t", tables[tableIndex].records[i].o_records[i][j].floatValue);
-                                    } else if (strcmp(tables[tableIndex].columns[j].type, "double") == 0) {
-                                        printf("%0.2lf\t", tables[tableIndex].records[i].o_records[i][j].doubleValue);
-                                    } else if (strcmp(tables[tableIndex].columns[j].type, "string") == 0) {
-                                        printf("%s\t", tables[tableIndex].records[i].o_records[i][j].stringValue);
+                                    if (strcmp(tables[table_index].columns[j].type, "int") == 0) {
+                                        printf("%d\t", tables[table_index].records[i].o_records[i][j].int_value);
+                                    } else if (strcmp(tables[table_index].columns[j].type, "char") == 0) {
+                                        printf("%s\t", tables[table_index].records[i].o_records[i][j].string_value);
+                                    } else if (strcmp(tables[table_index].columns[j].type, "float") == 0) {
+                                        printf("%0.2f\t", tables[table_index].records[i].o_records[i][j].float_value);
+                                    } else if (strcmp(tables[table_index].columns[j].type, "double") == 0) {
+                                        printf("%0.2lf\t", tables[table_index].records[i].o_records[i][j].double_value);
+                                    } else if (strcmp(tables[table_index].columns[j].type, "string") == 0) {
+                                        printf("%s\t", tables[table_index].records[i].o_records[i][j].string_value);
                                     }
                                 }
                             }
@@ -411,30 +421,26 @@ void searchValue() {
                         }
                         break;
                     case 6:
-                        if (strstr(tableValue, searchValue) != NULL) {
-                            resultsCount++;
+                        if (strstr(table_value, search_value) != NULL) {
+                            results_count++;
                             // Exibir o registro correspondente
-                                for (int n = 0; n < tables[tableIndex].numColumns; n++) {
-                                    printf("%s\t", tables[tableIndex].columns[n].name);
-                                }
-                                printf("\n");
-                            for (int j = 0; j < tables[tableIndex].numColumns; j++) {
+                            for (int j = 0; j < tables[table_index].num_columns; j++) {
                                 
                                 if (j==0)
                                 {
-                                    printf("%d\t", tables[tableIndex].records[i].primaryKey);    
+                                    printf("%d\t", tables[table_index].records[i].primary_key);    
                                 } else {
                                 
-                                    if (strcmp(tables[tableIndex].columns[j].type, "int") == 0) {
-                                        printf("%d\t", tables[tableIndex].records[i].o_records[i][j].intValue);
-                                    } else if (strcmp(tables[tableIndex].columns[j].type, "char") == 0) {
-                                        printf("%s\t", tables[tableIndex].records[i].o_records[i][j].stringValue);
-                                    } else if (strcmp(tables[tableIndex].columns[j].type, "float") == 0) {
-                                        printf("%0.2f\t", tables[tableIndex].records[i].o_records[i][j].floatValue);
-                                    } else if (strcmp(tables[tableIndex].columns[j].type, "double") == 0) {
-                                        printf("%0.2lf\t", tables[tableIndex].records[i].o_records[i][j].doubleValue);
-                                    } else if (strcmp(tables[tableIndex].columns[j].type, "string") == 0) {
-                                        printf("%s\t", tables[tableIndex].records[i].o_records[i][j].stringValue);
+                                    if (strcmp(tables[table_index].columns[j].type, "int") == 0) {
+                                        printf("%d\t", tables[table_index].records[i].o_records[i][j].int_value);
+                                    } else if (strcmp(tables[table_index].columns[j].type, "char") == 0) {
+                                        printf("%s\t", tables[table_index].records[i].o_records[i][j].string_value);
+                                    } else if (strcmp(tables[table_index].columns[j].type, "float") == 0) {
+                                        printf("%0.2f\t", tables[table_index].records[i].o_records[i][j].float_value);
+                                    } else if (strcmp(tables[table_index].columns[j].type, "double") == 0) {
+                                        printf("%0.2lf\t", tables[table_index].records[i].o_records[i][j].double_value);
+                                    } else if (strcmp(tables[table_index].columns[j].type, "string") == 0) {
+                                        printf("%s\t", tables[table_index].records[i].o_records[i][j].string_value);
                                     }
                                 }
                             }
@@ -446,7 +452,7 @@ void searchValue() {
                         return;
                 }
             }
-            if (resultsCount == 0) {
+            if (results_count == 0) {
                 printf("Nenhum resultado encontrado.\n");
             }
         } else {

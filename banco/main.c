@@ -6,7 +6,7 @@
 #include "file.h"
 
 Table tables[MAX_TABLES];
-int numTables = 0;
+int num_tables = 0;
 
 int main() {
     atexit(cleanupAndSave);
