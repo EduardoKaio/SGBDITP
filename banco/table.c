@@ -1,7 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
+#include "table.h"
 
+<<<<<<< HEAD:testes/testesKaio.c
 #define MAX_TABLES 100
 #define MAX_COLUMNS 10
 #define MAX_STRING_LENGTH 50
@@ -116,6 +119,8 @@ void loadTablesFromFile() {
 
     fclose(file);
 }
+=======
+>>>>>>> a73a9b0e5b1c5717f68760c4ad6c74ae4b233a24:banco/table.c
 
 void listTableData() {
     //loadTablesFromFile();
@@ -176,7 +181,11 @@ void listTables() {
         printf("\n=== Tabela %s ===\n", tables[i].name);
         
         for (int l = 0; l < tables[i].numColumns; l++) {
-            printf("%s\t", tables[i].columns[l].name);
+            if (l == 0) {
+                printf("%s  ", tables[i].columns[l].name);
+            } else {
+                printf("%s\t", tables[i].columns[l].name);
+            }
         }
         printf("\n");
 
@@ -184,7 +193,7 @@ void listTables() {
         for (int j = 0; j < tables[i].numRecords; j++) {
             for (int k = 0; k < tables[i].numColumns; k++) {
                 if (k == 0) {
-                    printf("%d\t", tables[i].records[j].primaryKey);
+                    printf("%d   ", tables[i].records[j].primaryKey);
                 } else {
                     if (strcmp(tables[i].columns[k].type, "int") == 0) {
                         printf("%d\t",tables[i].records[j].o_records[j][k].intValue);
@@ -234,6 +243,27 @@ void createTable() {
     numTables++;
     saveTablesToFile();
     printf("Tabela criada com sucesso.\n");
+    
+    printf("\nVoltar ao Menu Principal?\n1. Sim\n2. Não\n");
+    int choice_inicio;
+    printf("Escolha uma opção: ");
+    scanf("%d", &choice_inicio);
+    if(choice_inicio == 1){
+        system("cls");
+        printf("Voltando ao Menu Principal...\n");
+        sleep(2);
+        system("cls");
+        return;
+    } else if (choice_inicio == 2){
+        system("cls");
+        createTable();
+    } else {
+        printf("Valor inválido.\nVoltando ao Menu Principal...\n");
+        sleep(2);
+        system("cls");
+        return;
+    }
+
 }
 
 void insertRecord() {
@@ -298,6 +328,7 @@ void insertRecord() {
     tables[tableIndex].numRecords++;
     saveTablesToFile();
     printf("Registro inserido com sucesso.\n");
+<<<<<<< HEAD:testes/testesKaio.c
 }
 
 void cleanupAndSave() {
@@ -308,53 +339,168 @@ void cleanupAndSave() {
 int main() {
     atexit(cleanupAndSave);
     loadTablesFromFile();
-
-    int choice;
-
-    do {
-        printf("\n=== Menu ===\n");
-        printf("1. Criar Tabela\n");
-        printf("2. Listar Tabelas\n");
-        printf("3. Inserir Registro\n");
-        printf("4. Listar Dados da Tabela\n");
-        printf("5. Pesquisar Valor\n");
-        printf("6. Apagar Registro\n");
-        printf("7. Apagar Tabela\n");
-        printf("8. Sair\n");
-
-        printf("Escolha uma opção: ");
-        scanf("%d", &choice);
-
-        switch (choice) {
-            case 1:
-                createTable();
-                break;
-            case 2:
-                listTables();
-                break;
-            case 3:
-                insertRecord();
-                break;
-            case 4:
-                listTableData();
-                break;
-            case 5:
-                // searchValue();
-                break;
-            case 6:
-                // deleteRecord();
-                break;
-            case 7:
-                // deleteTable();
-                break;
-            case 8:
-                printf("Saindo...\n");
-                break;
-            default:
-                printf("Opção inválida. Tente novamente.\n");
-        }
-
-    } while (choice != 8);
-
-    return 0;
+=======
+    
+    printf("\nVoltar ao Menu Principal?\n1. Sim\n2. Não\n");
+    int choice_inicio;
+    printf("Escolha uma opção: ");
+    scanf("%d", &choice_inicio);
+    if(choice_inicio == 1){
+        system("cls");
+        printf("Voltando ao Menu Principal...\n");
+        sleep(2);
+        system("cls");
+        return;
+    } else if (choice_inicio == 2){
+        system("cls");
+        insertRecord();
+    } else {
+        printf("Valor inválido.\nVoltando ao Menu Principal...\n");
+        sleep(2);
+        system("cls");
+        return;
+    }
 }
+
+void deleteTable() {
+    char tableName[MAX_STRING_LENGTH];
+
+    printf("Digite o nome da tabela a ser apagada: ");
+    scanf("%s", tableName);
+
+    int tableIndex = -1;
+>>>>>>> a73a9b0e5b1c5717f68760c4ad6c74ae4b233a24:banco/table.c
+
+    // Encontrar a tabela pelo nome
+    for (int i = 0; i < numTables; i++) {
+        if (strcmp(tables[i].name, tableName) == 0) {
+            tableIndex = i;
+            break;
+        }
+    }
+
+    if (tableIndex == -1) {
+        printf("Tabela não encontrada.\n");
+        return;
+    }
+
+    // Remover a tabela da lista
+    for (int i = tableIndex; i < numTables - 1; i++) {
+        tables[i] = tables[i + 1];
+    }
+
+    // Decrementar o número de tabelas
+    numTables--;
+
+    saveTablesToFile();
+    printf("Tabela apagada com sucesso.\n");
+    
+    printf("\nVoltar ao Menu Principal?\n1. Sim\n2. Não\n");
+    int choice_inicio;
+    printf("Escolha uma opção: ");
+    scanf("%d", &choice_inicio);
+    if(choice_inicio == 1){
+        system("cls");
+        printf("Voltando ao Menu Principal...\n");
+        sleep(2);
+        system("cls");
+        return;
+    } else if (choice_inicio == 2){
+        system("cls");
+        deleteTable();
+    } else {
+        printf("Valor inválido.\nVoltando ao Menu Principal...\n");
+        sleep(2);
+        system("cls");
+        return;
+    }
+}
+
+void deleteRecord() {
+    char tableName[MAX_STRING_LENGTH];
+    int primaryKey;
+
+    printf("Digite o nome da tabela para apagar o registro: ");
+    scanf("%s", tableName);
+
+    int tableIndex = -1;
+
+    // Encontrar a tabela pelo nome
+    for (int i = 0; i < numTables; i++) {
+        if (strcmp(tables[i].name, tableName) == 0) {
+            tableIndex = i;
+            break;
+        }
+    }
+
+    if (tableIndex == -1) {
+        printf("Tabela não encontrada.\n");
+        return;
+    }
+
+
+    printf("Digite a chave primária da linha a ser apagada (inteiro sem sinal): ");
+    scanf("%d", &primaryKey);
+
+    // Encontrar a linha pelo valor da chave primária
+    int rowIndex = -1;
+    for (int i = 0; i < tables[tableIndex].numRecords; i++) {
+        if (primaryKey == tables[tableIndex].records[i].primaryKey) {
+            rowIndex = i;
+            break;            
+        }
+    }
+
+    if (rowIndex == -1) {
+        printf("Registro com a chave primária fornecida não encontrado.\n");
+        return;
+    }
+
+    // Remover a linha
+    for (int i = rowIndex; i < tables[tableIndex].numRecords - 1; i++) {
+        for (int j = 0; j < tables[tableIndex].numColumns; j++) {
+            if (j==0) {
+                tables[tableIndex].records[i].primaryKey = tables[tableIndex].records[i+1].primaryKey;
+            } else {
+                if (strcmp(tables[tableIndex].columns[j].type, "int") == 0) {
+                    tables[tableIndex].records[i].o_records[i][j].intValue = tables[tableIndex].records[i+1].o_records[i+1][j].intValue;
+                } else if (strcmp(tables[tableIndex].columns[j].type, "char") == 0) {
+                    strcpy(tables[tableIndex].records[i].o_records[i][j].stringValue, tables[tableIndex].records[i+1].o_records[i+1][j].stringValue);
+                } else if (strcmp(tables[tableIndex].columns[j].type, "float") == 0) {
+                    tables[tableIndex].records[i].o_records[i][j].floatValue = tables[tableIndex].records[i+1].o_records[i+1][j].floatValue;
+                } else if (strcmp(tables[tableIndex].columns[j].type, "double") == 0) {
+                    tables[tableIndex].records[i].o_records[i][j].doubleValue = tables[tableIndex].records[i+1].o_records[i+1][j].doubleValue;
+                } else if (strcmp(tables[tableIndex].columns[j].type, "string") == 0) {
+                    strcpy(tables[tableIndex].records[i].o_records[i][j].stringValue, tables[tableIndex].records[i+1].o_records[i+1][j].stringValue);
+                }
+            }
+        }
+    }
+
+    // Decrementar o número de registros
+    tables[tableIndex].numRecords--;
+
+    saveTablesToFile();
+    printf("Registro apagado com sucesso.\n");
+    
+    printf("\nVoltar ao Menu Principal?\n1. Sim\n2. Não\n");
+    printf("Escolha uma opção: ");
+    int choice_inicio;
+    scanf("%d", &choice_inicio);
+    if(choice_inicio == 1){
+        system("cls");
+        printf("Voltando ao Menu Principal...\n");
+        sleep(2);
+        system("cls");
+        return;
+    } else if (choice_inicio == 2){
+        system("cls");
+        deleteRecord();
+    } else {
+        printf("Valor inválido.\nVoltando ao Menu Principal...\n");
+        sleep(2);
+        system("cls");
+        return;
+    }
+}
+

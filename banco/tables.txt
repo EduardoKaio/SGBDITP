@@ -1,0 +1,12 @@
+Pessoa 3
+id int
+noe string
+idade int
+1 kaio 20 
+2 Maria 21 
+4 Felipe 50 
+3 Pedro 25 
+Cliente 2
+id int
+pedido int
+1 12345 

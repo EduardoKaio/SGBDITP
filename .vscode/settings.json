@@ -1,3 +1,8 @@
 {
-    "C_Cpp.errorSquiggles": "enabled"
+    "files.associations": {
+        "stdio.h": "c",
+        "search.h": "c",
+        "table.h": "c",
+        "file.h": "c"
+    }
 }
