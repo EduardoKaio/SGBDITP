@@ -421,7 +421,8 @@ void searchValue() {
                         }
                         break;
                     case 6:
-                        if (strstr(table_value, search_value) != NULL) {
+                        int modificacoes = VerificarSimilaridade(table_value, search_value);
+                        if (modificacoes < 3) {
                             results_count++;
                             // Exibir o registro correspondente
                             for (int j = 0; j < tables[table_index].num_columns; j++) {
@@ -479,4 +480,48 @@ void searchValue() {
         system("cls");
         return;
     }
+}
+
+int min(int a, int b, int c) {
+    if (a < b) {
+        return (a < c) ? a : c;
+    } else {
+        return (b < c) ? b : c;
+    }
+}
+
+int VerificarSimilaridade(char palavra1[], char palavra2[]) {
+    int tam1 = strlen(palavra1);
+    int tam2 = strlen(palavra2);
+    int verif[tam1 + 1][tam2 + 1];
+
+    // Se uma das palavras tiver comprimento igual a zero, é necessária uma modificação do tamanho da outra:
+    if (tam1 == 0)
+        return tam2;
+
+    if (tam2 == 0)
+        return tam1;
+
+    // Atribuir ordem numérica resultante das palavras ao vetor de modo, respectivamente, "vertical" e "horizontal":
+    for (int i = 0; i <= tam1; i++)
+        verif[i][0] = i;
+
+    for (int j = 0; j <= tam2; j++)
+        verif[0][j] = j;
+
+    // Verificação:
+    for (int i = 1; i <= tam1; i++) {
+        for (int j = 1; j <= tam2; j++) {
+            // Definindo custos de modificação (deleção, inserção e substituição):
+            int custo = (palavra2[j - 1] == palavra1[i - 1]) ? 0 : 1;
+
+            verif[i][j] = min(
+                verif[i - 1][j] + 1,
+                verif[i][j - 1] + 1,
+                verif[i - 1][j - 1] + custo
+            );
+        }
+    }
+
+    return verif[tam1][tam2];
 }

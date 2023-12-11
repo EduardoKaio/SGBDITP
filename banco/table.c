@@ -101,8 +101,22 @@ void createTable() {
         return;
     }
 
-    printf("Digite o nome da tabela: ");
+    int table_index = -1;
+
+    printf("Digite o nome da tabela que deseja criar: ");
     scanf("%s", tables[num_tables].name);
+
+    for (int i = 0; i < num_tables; i++) {
+        if (strcmp(tables[i].name, tables[num_tables].name) == 0) {
+            table_index = i;
+            break;
+        }
+    }
+
+    if (table_index != -1) {
+        printf("A tabela já Existe.\n");
+        return;
+    }
 
     printf("Quantas colunas a tabela terá? ");
     scanf("%d", &tables[num_tables].num_columns);
