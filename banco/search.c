@@ -4,6 +4,7 @@
 #include <ctype.h>
 #include "search.h"
 
+// Função para buscar valores na tabela
 void searchValue() {
     char table_name[MAX_STRING_LENGTH];
     int table_index = -1;
@@ -11,6 +12,7 @@ void searchValue() {
     printf("Digite o nome da tabela para realizar a pesquisa: ");
     scanf("%s", table_name);
 
+    // Verificar se a tabela existe
     for (int i = 0; i < num_tables; i++) {
         if (strcmp(tables[i].name, table_name) == 0) {
             table_index = i;
@@ -33,6 +35,7 @@ void searchValue() {
     printf("Escolha o número da coluna para pesquisa: ");
     scanf("%d", &column_choice);
     
+    // Verificar se a coluna 1(id) foi a escolhida
     if (column_choice==1){
         printf("Digite o valor para pesquisa: ");
         
@@ -49,6 +52,7 @@ void searchValue() {
         }
         printf("\n");
         
+        // Exibir linha correspondente
         for (int i = 0; i < tables[table_index].num_records; i++) {
             if (tables[table_index].records[i].primary_key == search_value) {
                 printf("\n");
@@ -87,6 +91,7 @@ void searchValue() {
         // Solicitar o valor para pesquisa
         printf("Digite o valor para pesquisa: ");
 
+        // Verificar o tipo da coluna que foi escolhida
         if (strcmp(column_type, "int") == 0) {
             int search_value;
             scanf("%d", &search_value);
@@ -101,6 +106,7 @@ void searchValue() {
             }
             printf("\n");
 
+            // Exibir linha(s) correspondente(s) 
             for (int i = 0; i < tables[table_index].num_records; i++) {
                 if (tables[table_index].records[i].o_records[i][column_choice - 1].int_value == search_value) {
                     for (int j = 0; j < tables[table_index].num_columns; j++) {
@@ -139,6 +145,7 @@ void searchValue() {
             }
             printf("\n");
 
+            // Exibir linha(s) correspondente(s)
             for (int i = 0; i < tables[table_index].num_records; i++) {
                 if (strcmp(tables[table_index].records[i].o_records[i][column_choice - 1].string_value, search_value) == 0) {
                     for (int j = 0; j < tables[table_index].num_columns; j++) {
@@ -177,7 +184,8 @@ void searchValue() {
                 printf("%s\t", tables[table_index].columns[i].name);
             }
             printf("\n");
-
+            
+            // Exibir linha(s) correspondente(s)
             for (int i = 0; i < tables[table_index].num_records; i++) {
                 if (tables[table_index].records[i].o_records[i][column_choice - 1].float_value == search_value) {
                     for (int j = 0; j < tables[table_index].num_columns; j++) {
@@ -217,6 +225,7 @@ void searchValue() {
             }
             printf("\n");
             
+            // Exibir linha(s) correspondente(s)
             for (int i = 0; i < tables[table_index].num_records; i++) {
                 if (tables[table_index].records[i].o_records[i][column_choice - 1].double_value == search_value) {
                     for (int j = 0; j < tables[table_index].num_columns; j++) {
@@ -270,6 +279,7 @@ void searchValue() {
             }
             printf("\n");
 
+            // Implementar lógica de comparação com base na opção escolhida
             for (int i = 0; i < tables[table_index].num_records; i++) {               
                 char table_value[MAX_STRING_LENGTH];
                 strcpy(table_value, tables[table_index].records[i].o_records[i][column_choice - 1].string_value);
@@ -284,12 +294,11 @@ void searchValue() {
 
                 int compare_result = strcmp(table_value, search_value);
 
-                // Implementar lógica de comparação com base na opção escolhida
                 switch (search_option) {
                     case 1:
                         if (compare_result > 0) {
                             results_count++;
-                            // Exibir o registro correspondente
+                            // Exibir linha(s) correspondente(s)
                             for (int j = 0; j < tables[table_index].num_columns; j++) {
                                 
                                 if (j==0)
@@ -316,7 +325,7 @@ void searchValue() {
                     case 2:
                         if (compare_result >= 0) {
                             results_count++;
-                            // Exibir o registro correspondente
+                            // Exibir linha(s) correspondente(s)
                             for (int j = 0; j < tables[table_index].num_columns; j++) {
                                 if (j==0)
                                 {
@@ -342,7 +351,7 @@ void searchValue() {
                     case 3:
                         if (compare_result == 0) {
                             results_count++;
-                            // Exibir o registro correspondente
+                            // Exibir linha(s) correspondente(s)
                             for (int j = 0; j < tables[table_index].num_columns; j++) {
 
                                 if (j==0)
@@ -369,7 +378,7 @@ void searchValue() {
                     case 4:
                         if (compare_result < 0) {
                             results_count++;
-                            // Exibir o registro correspondente
+                            // Exibir linha(s) correspondente(s)
                             for (int j = 0; j < tables[table_index].num_columns; j++) {
                                 
                                 if (j==0)
@@ -396,7 +405,7 @@ void searchValue() {
                     case 5:
                         if (compare_result <= 0) {
                             results_count++;
-                            // Exibir o registro correspondente
+                            // Exibir linha(s) correspondente(s)
                             for (int j = 0; j < tables[table_index].num_columns; j++) {
                                 
                                 if (j==0)
@@ -421,10 +430,12 @@ void searchValue() {
                         }
                         break;
                     case 6:
-                        int modificacoes = VerificarSimilaridade(table_value, search_value);
-                        if (modificacoes < 3) {
+                        // Verifica a similaridade da palavra escolhida com as da tabela
+                        int diferencas = VerificarSimilaridade(table_value, search_value);
+                        // Se forem menos de x diferenças considera verdadeiro
+                        if (diferencas < 3) {
                             results_count++;
-                            // Exibir o registro correspondente
+                            // Exibir linha(s) correspondente(s)
                             for (int j = 0; j < tables[table_index].num_columns; j++) {
                                 
                                 if (j==0)
@@ -482,6 +493,7 @@ void searchValue() {
     }
 }
 
+// Verifica custos de modificação (deleção, inserção e substituição)
 int min(int a, int b, int c) {
     if (a < b) {
         return (a < c) ? a : c;
@@ -490,6 +502,7 @@ int min(int a, int b, int c) {
     }
 }
 
+// Função para verificar similaridade entre os valores de busca e os que já estão na tabela
 int VerificarSimilaridade(char palavra1[], char palavra2[]) {
     int tam1 = strlen(palavra1);
     int tam2 = strlen(palavra2);

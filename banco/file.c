@@ -5,6 +5,7 @@
 #include <string.h>
 #include <ctype.h>
 
+// Função de salvar as tabelas no arquivo
 void saveTablesToFile() {
     FILE *file = fopen("tables.txt", "w");
 
@@ -13,6 +14,7 @@ void saveTablesToFile() {
         exit(EXIT_FAILURE);
     }
 
+    // Escrita dos dados no arquivo
     for (int i = 0; i < num_tables; i++) {
         fprintf(file, "%s %d\n", tables[i].name, tables[i].num_columns);
 
@@ -48,6 +50,7 @@ void saveTablesToFile() {
     fclose(file);
 }
 
+// Função para ler os dados do arquivo
 void loadTablesFromFile() {
     FILE *file = fopen("tables.txt", "r");
 
@@ -56,6 +59,7 @@ void loadTablesFromFile() {
         exit(EXIT_FAILURE);
     }
 
+    // Leitura dos dados do arquivo
     while (fscanf(file, "%s %d", tables[num_tables].name, &tables[num_tables].num_columns) == 2) {
         for (int i = 0; i < tables[num_tables].num_columns; i++) {
             fscanf(file, "%s %s", tables[num_tables].columns[i].name, tables[num_tables].columns[i].type);
@@ -82,7 +86,6 @@ void loadTablesFromFile() {
             tables[num_tables].num_records++;
         }
 
-        // printf("%d\n", num_tables);
         num_tables++;
     }
 

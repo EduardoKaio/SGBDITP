@@ -4,14 +4,15 @@
 #include <ctype.h>
 #include "table.h"
 
+// Função para listar os dados de uma tabela específica
 void listTableData() {
-    //loadTablesFromFile();
     char table_name[MAX_STRING_LENGTH];
     int table_index = -1;
 
     printf("Digite o nome da tabela para listar os dados: ");
     scanf("%s", table_name);
 
+    // Verificar se a tabela existe
     for (int i = 0; i < num_tables; i++) {
         if (strcmp(tables[i].name, table_name) == 0) {
             table_index = i;
@@ -22,6 +23,25 @@ void listTableData() {
     if (table_index == -1) {
         printf("Tabela não encontrada.\n");
         return;
+        printf("\nVoltar ao Menu Principal?\n1. Sim\n2. Não\n");
+        int choice_inicio;
+        printf("Escolha uma opção: ");
+        scanf("%d", &choice_inicio);
+        if(choice_inicio == 1){
+            system("cls");
+            printf("Voltando ao Menu Principal...\n");
+            sleep(2);
+            system("cls");
+            return;
+        } else if (choice_inicio == 2){
+            system("cls");
+            listTableData();
+        } else {
+            printf("Valor inválido.\nVoltando ao Menu Principal...\n");
+            sleep(2);
+            system("cls");
+            return;
+        }
     }
 
     printf("\n=== Dados da Tabela %s ===\n", table_name);
@@ -53,15 +73,36 @@ void listTableData() {
         }
         printf("\n");
     }
+
+    printf("\nVoltar ao Menu Principal?\n1. Sim\n2. Não\n");
+    int choice_inicio;
+    printf("Escolha uma opção: ");
+    scanf("%d", &choice_inicio);
+    if(choice_inicio == 1){
+        system("cls");
+        printf("Voltando ao Menu Principal...\n");
+        sleep(2);
+        system("cls");
+        return;
+    } else if (choice_inicio == 2){
+        system("cls");
+        listTableData();
+    } else {
+        printf("Valor inválido.\nVoltando ao Menu Principal...\n");
+        sleep(2);
+        system("cls");
+        return;
+    }
 }
 
+// Função para listar todas as tabelas
 void listTables() {
-    //loadTablesFromFile();
     printf("\n=== Lista de Tabelas ===\n");
 
     for (int i = 0; i < num_tables; i++) {
         printf("\n=== Tabela %s ===\n", tables[i].name);
         
+        //Exibir o cabeçalho de cada tabela
         for (int l = 0; l < tables[i].num_columns; l++) {
             if (l == 0) {
                 printf("%s  ", tables[i].columns[l].name);
@@ -95,7 +136,9 @@ void listTables() {
     }
 }
 
+// Função para criar uma nova tabela
 void createTable() {
+    //Verifica se o número de tabelas criadas atingiu o limite estipulado
     if (num_tables >= MAX_TABLES) {
         printf("Número máximo de tabelas atingido.\n");
         return;
@@ -106,6 +149,7 @@ void createTable() {
     printf("Digite o nome da tabela que deseja criar: ");
     scanf("%s", tables[num_tables].name);
 
+    //Verifica se a tabela que vai ser criada já existe
     for (int i = 0; i < num_tables; i++) {
         if (strcmp(tables[i].name, tables[num_tables].name) == 0) {
             table_index = i;
@@ -115,12 +159,31 @@ void createTable() {
 
     if (table_index != -1) {
         printf("A tabela já Existe.\n");
-        return;
+        printf("\nVoltar ao Menu Principal?\n1. Sim\n2. Não\n");
+        int choice_inicio;
+        printf("Escolha uma opção: ");
+        scanf("%d", &choice_inicio);
+        if(choice_inicio == 1){
+            system("cls");
+            printf("Voltando ao Menu Principal...\n");
+            sleep(2);
+            system("cls");
+            return;
+        } else if (choice_inicio == 2){
+            system("cls");
+            createTable();
+        } else {
+            printf("Valor inválido.\nVoltando ao Menu Principal...\n");
+            sleep(2);
+            system("cls");
+            return;
+        }
     }
 
     printf("Quantas colunas a tabela terá? ");
     scanf("%d", &tables[num_tables].num_columns);
 
+    //Ler os nomes e tipos de cada coluna
     for (int i = 0; i < tables[num_tables].num_columns; i++) {
         if (i == 0) {
             char tipo[MAX_STRING_LENGTH] = "int";
@@ -162,6 +225,7 @@ void createTable() {
 
 }
 
+// Função para inserir uma linha em uma tabela
 void insertRecord() {
     char table_name[MAX_STRING_LENGTH];
     int table_index = -1;
@@ -169,6 +233,7 @@ void insertRecord() {
     printf("Digite o nome da tabela para inserir o registro: ");
     scanf("%s", table_name);
 
+    //Verifica se a tabela existe
     for (int i = 0; i < num_tables; i++) {
         if (strcmp(tables[i].name, table_name) == 0) {
             table_index = i;
@@ -181,6 +246,7 @@ void insertRecord() {
         return;
     }
 
+    //Verifica se o número de linhas criadas já atingiu o máximo estipulado
     if (tables[table_index].num_records >= MAX_RECORDS) {
         printf("Número máximo de registros atingido para esta tabela.\n");
         return;
@@ -188,6 +254,7 @@ void insertRecord() {
 
     printf("Inserindo registro na tabela %s:\n", table_name);
 
+    //Criação de uma variável auxiliar para diminuir o tamanho das próximas variáveis
     int aux = tables[table_index].num_records;
 
     // Pede ao usuário para fornecer valores para cada coluna
@@ -246,6 +313,7 @@ void insertRecord() {
     }
 }
 
+// Função para apagar uma tabela
 void deleteTable() {
     char table_name[MAX_STRING_LENGTH];
 
@@ -254,7 +322,7 @@ void deleteTable() {
 
     int table_index = -1;
 
-    // Encontrar a tabela pelo nome
+    // Verificar se a tabela existe
     for (int i = 0; i < num_tables; i++) {
         if (strcmp(tables[i].name, table_name) == 0) {
             table_index = i;
@@ -264,7 +332,25 @@ void deleteTable() {
 
     if (table_index == -1) {
         printf("Tabela não encontrada.\n");
-        return;
+        printf("\nVoltar ao Menu Principal?\n1. Sim\n2. Não\n");
+        int choice_inicio;
+        printf("Escolha uma opção: ");
+        scanf("%d", &choice_inicio);
+        if(choice_inicio == 1){
+            system("cls");
+            printf("Voltando ao Menu Principal...\n");
+            sleep(2);
+            system("cls");
+            return;
+        } else if (choice_inicio == 2){
+            system("cls");
+            deleteTable();
+        } else {
+            printf("Valor inválido.\nVoltando ao Menu Principal...\n");
+            sleep(2);
+            system("cls");
+            return;
+        }
     }
 
     // Remover a tabela da lista
@@ -299,6 +385,7 @@ void deleteTable() {
     }
 }
 
+// Função para apagar uma linha de uma tabela
 void deleteRecord() {
     char table_name[MAX_STRING_LENGTH];
     int primary_key;
@@ -308,7 +395,7 @@ void deleteRecord() {
 
     int table_index = -1;
 
-    // Encontrar a tabela pelo nome
+    // Verificar se a tabela existe
     for (int i = 0; i < num_tables; i++) {
         if (strcmp(tables[i].name, table_name) == 0) {
             table_index = i;
@@ -318,7 +405,25 @@ void deleteRecord() {
 
     if (table_index == -1) {
         printf("Tabela não encontrada.\n");
-        return;
+        printf("\nVoltar ao Menu Principal?\n1. Sim\n2. Não\n");
+        int choice_inicio;
+        printf("Escolha uma opção: ");
+        scanf("%d", &choice_inicio);
+        if(choice_inicio == 1){
+            system("cls");
+            printf("Voltando ao Menu Principal...\n");
+            sleep(2);
+            system("cls");
+            return;
+        } else if (choice_inicio == 2){
+            system("cls");
+            deleteRecord();
+        } else {
+            printf("Valor inválido.\nVoltando ao Menu Principal...\n");
+            sleep(2);
+            system("cls");
+            return;
+        }
     }
 
 
