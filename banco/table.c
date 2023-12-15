@@ -187,7 +187,7 @@ void createTable() {
     for (int i = 0; i < tables[num_tables].num_columns; i++) {
         if (i == 0) {
             char tipo[MAX_STRING_LENGTH] = "int";
-            printf("Digite o nome da coluna chave primária (inteiro sem sinal): ");
+            printf("Digite o nome da coluna chave primária: ");
             scanf("%s", tables[num_tables].columns[i].name);
             strcpy(tables[num_tables].columns[i].type, tipo);
         } else {

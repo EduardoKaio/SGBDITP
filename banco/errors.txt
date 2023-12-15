@@ -1,9 +1,0 @@
-- Ajeitar layout e botar sleep e clear quando necessário; (Quase pronto)
-- Falta ajeitar os espaçamentos entre as colunas pra ficar certinho no print das listas;
-- Ajeitar as variaveis e funções porque não estão no padrao;
-- Não permitir criar duas tabelas com o mesmo nome;
-- Ler tabela, nome de coluna e dados com espaço;
-- Modularizar o código; (Pronto)
-- No pesquisar string próximas, retornar palavras parecidas;
-- Quando pesquisar, o resultado voltar também com o cabeçalho da tabela; (Quase pronto)
-- Tratar os erros; 

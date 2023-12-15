@@ -7,7 +7,7 @@
 
 Table tables[MAX_TABLES];
 int num_tables = 0;
-
+ 
 int main() {
     atexit(cleanupAndSave);
     loadTablesFromFile();
