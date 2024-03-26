@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <locale.h>
 #include "table.h"
 #include "search.h"
 #include "file.h"
@@ -11,6 +12,8 @@ int num_tables = 0;
 int main() {
     atexit(cleanupAndSave);
     loadTablesFromFile();
+
+    setlocale(LC_ALL, "pt_BR");
 
     int choice;
 
@@ -25,7 +28,7 @@ int main() {
         printf("7. Apagar Tabela\n");
         printf("8. Sair\n");
 
-        printf("Escolha uma opção: ");
+        printf("Escolha uma opcao: ");
         scanf("%d", &choice);
 
         switch (choice) {

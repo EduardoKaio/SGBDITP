@@ -3,7 +3,6 @@ id int
 nome string
 idade int
 1 kaio 20 
-2 Maria 21 
 4 Felipe 50 
 3 Pedro 25 
 Cliente 2
@@ -14,3 +13,11 @@ pedido int
 Carro 2
 id int
 Marca string
+Atendimentos 3
+ordem int
+Nome string
+Sala int
+1 Felipe 5 
+2 Izadora 9 
+3 Ricardo 5 
+4 Ivanecia 8 
